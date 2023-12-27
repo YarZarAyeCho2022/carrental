@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="container bg-light p-3">
+    <div class="container rounded bg-white">
+        <div class="row">
+            <div class="col-md-5 border-right">
+                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold">{{session.name}}</span><span class="text-black-50">{{session.email}}</span><span> </span></div>
+            </div>
+            <div class="col-md-7 border-right">
+                <div class="p-3 py-5">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h4 class="text-right">Profile</h4>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            Name : {{session.name}}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            Email : {{session.email}}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            User type : {{session.user_type}}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            Passport : {{session.passport}}
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            Contact Number : {{session.contact}}
+                        </div>
+                    </div>
+                    
+                    <div class="mt-5"><button class="btn btn-primary profile-button" type="button">Edit Profile</button></div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    </div>
+    </div>
+</div>
+
+
+{% endblock %}

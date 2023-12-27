@@ -1,0 +1,63 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="container">
+    {% if success_register is not empty %}
+    <div class="bg-success text-white rounded-1 my-2 p-1">{{success_register}}</div>
+    {% endif %}
+    <form method="post" enctype = "multipart/form-data">
+            <div class="mb-3">
+                <label for="full-name" class="form-label">Full name</label>
+                <input type="text" class="form-control" id="full-name" aria-describedby="fullNameHelp" name="full-name" value="{{name}}" required>
+            </div>
+            <div class="mb-3">
+               <label for="email" class="form-label">Email address</label>
+               <input type="email" class="form-control" id="email" aria-describedby="emailHelp" name="email" value="{{email}}" required>
+               {% if email_err is not empty %}
+               <span class="small text-warning">{{email_err}}</span>
+               {% endif %}
+            </div>
+            <div class="mb-3">
+               <label for="password" class="form-label">Password</label>
+               <input type="text" class="form-control" id="password" name="password" required>
+               {% if password_err is not empty %}
+               <span class="small text-warning">{{password_err}}</span>
+               {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="user-type" class="form-label">User Type</label>
+                <select class="form-select" aria-label="Default select example" required name="user-type">
+                    <option>Open this select menu</option>
+                    <option value="staff">Staff</option>
+                    <option value="user">User</option>
+                </select>
+                {% if user_type_err is not empty %}
+               <span class="small text-warning">{{user_type_err}}</span>
+               {% endif %}
+            </div>
+            <div class="mb-3">
+                <label for="passport" class="form-label">Passport</label>
+                <input type="text" class="form-control" id="passport" aria-describedby="passportHelp" name="passport" value="{{passport}}">
+            </div>
+            <div class="mb-3">
+                <label for="contact" class="form-label">Contact number</label>
+                <input type="text" class="form-control" id="contact" aria-describedby="contactHelp" name="contact" value="{{contact}}">
+            </div>
+            <div class="mb-3">
+                <label for="formFile" class="form-label">User photo</label>
+                <input class="form-control" type="file" id="formFile" name="photo">
+                {% if photo_err is not empty %}
+                <span class="small text-warning">{{photo_err}}</span>
+                {% endif %}
+              </div>
+        </div>
+            <button type="submit" class="btn btn-primary" name="create-user">Register</button>
+    </form>
+</div>
+{% endblock %}
