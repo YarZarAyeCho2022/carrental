@@ -1,0 +1,91 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    <h2>Create Car</h2>
+    {% if success_register is not empty %}
+    <div class="bg-success text-white rounded-1 my-2 p-1">{{success_register}}</div>
+    {% endif %}
+    <form method="post" enctype = "multipart/form-data">
+        <div class="mb-3">
+            <label for="plate-number" class="form-label">Plate number</label>
+            <input type="text" class="form-control" id="plate-number" name="plate-number" value="{{plate_number}}" required>
+            {% if plate_number_err is not empty %}
+            <span class="small text-warning">{{plate_number_err}}</span>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+           <label for="model" class="form-label">Model</label>
+           <input type="text" class="form-control" id="model" name="model" value="{{model}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="brand" class="form-label">Brand</label>
+            <input type="text" class="form-control" id="brand" name="brand" value="{{brand}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="color" class="form-label">Color</label>
+            <input type="text" class="form-control" id="color" name="color" value="{{color}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="capacity" class="form-label">Capacity</label>
+            <input type="number" class="form-control" id="capacity" name="capacity" value="{{capacity}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="incurance" class="form-label">Insurance number</label>
+            <input type="text" class="form-control" id="insurance" name="insurance" value="{{insurance}}" required>
+        </div>
+        <div class="mb-3">
+            <label for="insurance-type" class="form-label">Insurance type</label>
+            <select class="form-select" required name="insurance-type">
+                <option>Select insurance type</option>
+                <option value="full">Full cover</option>
+                <option value="fire">Fire</option>
+                <option value="theft">Theft</option>
+            </select>
+            {% if insurance_type_err is not empty %}
+           <span class="small text-warning">{{insurance_type_err}}</span>
+           {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="rental-price" class="form-label">Rental price</label>
+            <input type="number" min="0" value="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="rental-price" name="rental-price" value="{{rental-price}}" required>
+        </div>
+
+        <label for="purchase-date" class="col-1 col-form-label">Purchase date</label>
+        <div class="input-group date" id="datepicker">
+            <input type="text" class="form-control" id="purchase-date" name="purchase-date"/>
+            <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
+        </div>
+        <div class="mb-3">
+            <label for="purchase-price" class="form-label">Purchase price</label>
+            <input type="number" min="0" value="{{purchase_price}}" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="purchase-price" name="purchase-price" value="{{purchase-price}}" required>
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile" class="form-label">Car photo</label>
+            <input class="form-control" type="file" id="formFile" name="photo">
+            {% if photo_err is not empty %}
+            <span class="small text-warning">{{photo_err}}</span>
+            {% endif %}
+          </div>
+        <button type="submit" class="btn btn-primary" name="create-car">Create</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        
+        $('#datepicker').datepicker();
+
+    });
+</script>
+  {% endblock %}

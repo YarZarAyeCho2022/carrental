@@ -18,7 +18,7 @@ if (isset(($_POST['login']))){
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $sql = "SELECT user_id,name,email,user_type,passport_number,contact_number FROM user WHERE email='".$email."' AND password ='".md5($password)."'";
+    $sql = "SELECT user_id,name,email,user_type,photo,passport_number,contact_number FROM user WHERE email='".$email."' AND password ='".md5($password)."'";
     $result = $link->query($sql);
 
     if(mysqli_num_rows($result)==0){
@@ -32,6 +32,7 @@ if (isset(($_POST['login']))){
             $_SESSION['name'] = $row['name'];
             $_SESSION['email'] = $row['email'];
             $_SESSION['user_type'] = $row['user_type'];
+            $_SESSION['photo'] = $row['photo'];
             $_SESSION['passport'] = $row['passport_number'];
             $_SESSION['contact'] = $row['contact_number'];
         }

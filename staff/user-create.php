@@ -36,11 +36,12 @@ if (isset($_POST['create-user'])){
     }
 
     if(isset($_FILES['photo'])){
-        $file_name = str_replace("@","-",$email);
+        $file_name = str_replace(".","-",str_replace("@","-",$email));
         $file_size =$_FILES['photo']['size'];
         $file_tmp =$_FILES['photo']['tmp_name'];
         $file_type=$_FILES['photo']['type'];
-        $file_ext=strtolower(end(explode('.',$_FILES['photo']['name'])));
+        $exploded = explode('.', $_FILES['photo']['name']);
+        $file_ext = strtolower(end($exploded));
         
         $extensions= array("jpeg","jpg","png");
         
@@ -55,7 +56,7 @@ if (isset($_POST['create-user'])){
         }
         
         if(empty($errors)==true){
-           move_uploaded_file($file_tmp,"../user/photos/".$file_name);
+           move_uploaded_file($file_tmp,"../user/photos/".$file_name.".".$file_ext);
         }else{
             $photo_err="Something wrong while uploading photo. Please try again.";
             $register_err = "Error!";
@@ -68,7 +69,7 @@ if (isset($_POST['create-user'])){
             "'".$email."',".
             "'".md5($password)."',".
             "'".$user_type."',".
-            "'".$file_name."',".
+            "'".$file_name.".".$file_ext."',".
             "'".$passport."',".
             "'".$contact."'".
             ")";
