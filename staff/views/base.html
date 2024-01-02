@@ -10,12 +10,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;600&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;700&family=Open+Sans&display=swap" rel="stylesheet"> 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
     
     {% endblock head %}
   </head>
-  <body style="font-family: 'Inter', sans-serif;  ">
+  <body style="font-family: 'Inter', sans-serif;">
     <header class="header">
       <nav class="px-4 py-2 shadow navbar navbar-expand-lg bg-white d-flex justify-content-between z-3">
         <div>Logo</div>
@@ -32,7 +35,7 @@
       
     </header>
     <div class="container-fluid d-flex align-items-stretch p-0">
-      <div id="side-bar" class="py-5 px-3 bg-info text-white" style="width:16rem; height:93vh; box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);">
+      <div id="side-bar" class="py-5 px-3 bg-info text-white" style="width:16rem; min-height:93vh; box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);">
         <h4 style="text-transform: uppercase;font-size: 1.2rem;" class="text-white">Dashboard</h4>
         <hr style="border-top:2px #ffffff solid">
         <div>
@@ -47,14 +50,14 @@
         <hr style="border-top:2px #ffffff solid">
         <div>
           <div class="text-uppercase" style="font-weight: 600;"><i class="bi bi-car-front me-3"></i>Cars</div>
-          <a href="#" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-card-list me-3"></i>List cars</div></a>
-          <a href="car-create.php" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-plus-circle me-3"></i>Add cars</div></a>
+          <a href="car-list.php" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-card-list me-3"></i>Car List</div></a>
+          <a href="car-create.php" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-plus-circle me-3"></i>Add new</div></a>
         </div>
         <hr style="border-top:2px #ffffff solid">
         <div>
           <div class="text-uppercase" style="font-weight: 600;"><i class="bi bi-tools me-3"></i>Maintanance</div>
-          <a href="#" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-card-list me-3"></i>Maintanace list</div></a>
-          <a href="#" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-plus-circle me-3"></i>Add new</div></a>
+          <a href="maintenance-list.php" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-card-list me-3"></i>Maintanace list</div></a>
+          <a href="maintenance-create.php" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-plus-circle me-3"></i>Add new</div></a>
           
         </div>
         <hr style="border-top:2px #ffffff solid">
@@ -62,6 +65,12 @@
           <div class="text-uppercase" style="font-weight: 600;"><i class="bi bi-cash-coin me-3"></i>Road tax</div>
           <a href="#" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-card-list me-3"></i>Tax list</div></a>
           <a href="#" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-plus-circle me-3"></i>Add new</div></a>
+        </div>
+        <hr style="border-top:2px #ffffff solid">
+        <div>
+          <div class="text-uppercase" style="font-weight: 600;"><i class="bi bi-people me-3"></i>Users</div>
+          <a href="#" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-card-list me-3"></i>User list</div></a>
+          <a href="user-create.php" class="text-white text-decoration-none my-2 d-block"><div><i class="bi bi-plus-circle me-3"></i>Add new</div></a>
         </div>
         <hr style="border-top:2px #ffffff solid">
         <div>

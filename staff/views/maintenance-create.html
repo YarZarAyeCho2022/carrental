@@ -1,0 +1,70 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    <h2>Create Maintenance Record</h2>
+    {% if success_message is not empty %}
+    <div class="bg-success text-white rounded-1 my-2 p-1">{{success_message}}</div>
+    {% endif %}
+    <form method="post" enctype = "multipart/form-data">
+        <div class="mb-3">
+            <label for="car" class="form-label">Car</label>
+            <select class="form-select" required name="car-id">
+                <option style="">Select car</option>
+                {% for item in car_list %}
+                <option value="{{item.car_id}}">{{item.brand}} - {{item.model}} [{{item.plate_number}}]</option>
+                {% endfor %}
+            </select>
+            {% if car_list_err is not empty %}
+           <span class="small text-warning">{{car_list_err}}</span>
+           {% endif %}
+        </div>
+        <div class="mb-3">
+           <label for="description" class="form-label">Description</label>
+           <textarea class="form-control" id="description" rows="3" required name="description"></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="start-date" class="col-1 col-form-label">Start date</label>
+            <div class="input-group date" id="start-datepicker">
+                <input type="text" class="form-control" id="start-date" name="start-date"/>
+                <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="end-date" class="col-1 col-form-label">End date</label>
+            <div class="input-group date" id="end-datepicker">
+                <input type="text" class="form-control" id="end-date" name="end-date"/>
+                <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label for="cost" class="form-label">Cost</label>
+            <input type="number" min="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="cost" name="cost" value="{{cost}}" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary" name="create-maintenance">Create</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        
+        $('#start-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#end-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+    });
+</script>
+  {% endblock %}

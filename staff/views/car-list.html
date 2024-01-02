@@ -1,0 +1,62 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    <div class="d-flex justify-content-between align-items-center">
+    <h2>Car List</h2>
+    <a class="btn btn-info text-white" href="car-create.php"><i class="bi bi-plus-square me-2"></i>Add new</a>
+    </div>
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col"  class="bg-info text-white">#</th>
+            <th scope="col"  class="bg-info text-white">Image</th>
+            <th scope="col"  class="bg-info text-white">Plate Number</th>
+            <th scope="col"  class="bg-info text-white">Model</th>
+            <th scope="col"  class="bg-info text-white">Brand</th>
+            <th scope="col"  class="bg-info text-white">Color</th>
+            <th scope="col"  class="bg-info text-white">Status</th>
+            <th scope="col"  class="bg-info text-white">Rental Price</th>
+            <th scope="col"  class="bg-info text-white">Rental Date</th>
+            <th scope="col"  class="bg-info text-white">Purchase Price</th>
+            <th scope="col"  class="bg-info text-white">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% set i = 1 %}
+            {% for item in queryResult %}
+          <tr>
+            <th scope="row">{{i}}</th>
+            
+            <td class="align-middle"><div class="rounded-2" style="width:150px; height:70px; background-image:url('cars-photo/{{item.image}}'); background-size:cover; background-position:center"></div></td>
+            <td class="align-middle">{{item.plate_number}}</td>
+            <td class="align-middle">{{item.model}}</td>
+            <td class="align-middle">{{item.brand}}</td>
+            <td class="align-middle">{{item.color}}</td>
+            <td class="align-middle">{{item.Status}}</td>
+            <td class="align-middle">{{item.rental_price|number_format(2, '.', ',') }}</td>
+            <td class="align-middle">{{item.purchase_date}}</td>
+            <td class="align-middle">{{item.purchase_price|number_format(2, '.', ',') }}</td>
+            <td class="align-middle">
+                <a href="car-view.php?id={{item.car_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                <a href="car-update.php?id={{item.car_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                <a href="#"><i class="bi bi-x-square text-danger"></i></a>
+            </td>
+          </tr>
+          {% set i = i + 1 %}
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

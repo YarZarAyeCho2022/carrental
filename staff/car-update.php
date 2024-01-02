@@ -13,11 +13,40 @@ $twig->addGlobal('session', $_SESSION);
 $plate_number= $model= $brand= $color= $insurance_type= $purchase_date= $insurance_number= $success_register= "";
 $purchase_price = $rental_price= $capacity=0;
 $plate_number_err = $insurance_type_err= $photo_err= "";
+$old_photo = $new_photo = "";
 
+if (isset($_GET['id'])){
+    $car_id = $_GET['id'];
+    
+    $sql = 'SELECT image,plate_number,model,brand,color,capacity,insurance_number,insurance_type,rental_price,purchase_date,purchase_price FROM car WHERE car_id='.$car_id;
+    
+    $query=$link->query($sql);
+    while ($row = mysqli_fetch_assoc($query)) {
+        $cars[] = $row;
+    }
+    
+    foreach ($cars as $car){
+        $image = $car['image'];
+        $plate_number=$car['plate_number'];
+        $model=$car['model'];
+        $brand=$car['brand'];
+        $color=$car['color'];
+        $capacity=$car['capacity'];
+        $insurance_number=$car['insurance_number'];
+        $insurance_type=$car['insurance_type'];
+        $rental_price =$car['rental_price'];
+        $purchase_date=$car['purchase_date'];
+        $purchase_price =$car['purchase_price'];
+    }
+    
+}
 
-
-if (isset($_POST['create-car'])){
+if (isset($_POST['update-car'])){
+    
+    $car_id= $_POST['car-id'];
+    $old_photo = $_POST['old-photo'];
     $plate_number = $_POST['plate-number'];
+    $old_plate_number = $_POST['old-plate-number'];
     $model = $_POST['model'];
     $brand = $_POST['brand'];
     $color = $_POST['color'];
@@ -33,14 +62,20 @@ if (isset($_POST['create-car'])){
         $register_err = "Error!";
     }
 
-    $sql = "SELECT car_id FROM car WHERE plate_number LIKE '".$plate_number."'";
-    $result = $link->query($sql);
-    if (mysqli_num_rows($result)>0){
-        $plate_number_err = "Plate number already exist.";
-        $register_err = "Error!";
+    if($old_plate_number != $plate_number){
+        $sql = "SELECT car_id FROM car WHERE plate_number LIKE '".$plate_number."'";
+        $result = $link->query($sql);
+        if (mysqli_num_rows($result)>0){
+            $plate_number_err = "Plate number already exist.";
+            $register_err = "Error!";
+        }    
     }
-    if(isset($_FILES['photo'])){
+    
+    
+    if(!empty($_FILES['photo']['name'])){
+        
         $file_name = uniqid();
+        echo $_FILES['photo']['name'];
         $file_size =$_FILES['photo']['size'];
         $file_tmp =$_FILES['photo']['tmp_name'];
         $file_type=$_FILES['photo']['type'];
@@ -61,41 +96,44 @@ if (isset($_POST['create-car'])){
         
         if(empty($errors)==true){
            move_uploaded_file($file_tmp,"cars-photo/".$file_name.".".$file_ext);
+           $new_photo = $file_name.".".$file_ext;
         }else{
             $photo_err="Something wrong while uploading photo. Please try again.";
             $register_err = "Error!";
         }
+        
+     }
+     else {
+        $new_photo =$old_photo;
      }
 
      if (empty($register_err)){
-        $sql = "INSERT INTO car(image,plate_number,model,brand,color,capacity,insurance_number,insurance_type,rental_price,purchase_date,purchase_price,created_date) VALUES (".
-            "'".$file_name.".".$file_ext."',".
-            "'".$plate_number."',".
-            "'".$model."',".
-            "'".$brand."',".
-            "'".$color."',".
-            "".$capacity.",".
-            "'".$insurance_number."',".
-            "'".$insurance_type."',".
-            "".$rental_price.",".
-            "'".$purchase_date."',".
-            "".$purchase_price.",".
-            "'".date('Y-m-d H:i:s')."'".
-            ")";
+        
+        $image = $new_photo;
+        $sql = "UPDATE car SET "
+            ."image = '".$image."',"
+            ."plate_number = '".$plate_number."',"
+            ."model ='" . $model . "',"
+            ."brand ='" . $brand . "',"
+            ."color ='" .$color."',"
+            ."capacity =".$capacity.","
+            ."insurance_number ='" .$insurance_number."',"
+            ."insurance_type ='".$insurance_type."',"
+            ."rental_price=" .$rental_price.","
+            ."purchase_date='".$purchase_date."',"
+            ."purchase_price=" .$purchase_price
+            ." WHERE car_id=".$car_id;
         $results = $link->query($sql);
         $link->close();
-        $success_register = 'New car '.$plate_number. '<'. $model.'> has been created successfully';
-
-        if (!empty($success_register)){
-            $plate_number= $model= $brand= $color= $insurance_type= $purchase_date= $insurance_number= $photo_err = "";
-            $purchase_price = $rental_price= $capacity=0;
-        }
+        $success_register = 'The car '.$plate_number. '<'. $model.'> has been updated successfully';
     }
 
 }
 
 
-echo $twig->render('car-create.html',array(
+echo $twig->render('car-update.html',array(
+    "car_id"=> $car_id,
+    "image"=> $image,
     "plate_number"=>$plate_number,
     "model" => $model,
     "brand" => $brand,

@@ -1,0 +1,119 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    <div class="d-flex justify-content-between align-items-center">
+    <h2>Maintenance List</h2>
+    <a class="btn btn-info text-white" href="maintanace-create.php"><i class="bi bi-plus-square me-2"></i>Add new</a>
+    </div>
+    {% if action_message is not empty %}
+    <div class="bg-success text-white rounded-1 my-2 p-1">{{action_message}}</div>
+    {% endif %}
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col"  class="bg-info text-white">#</th>
+            <th scope="col"  class="bg-info text-white">Image</th>
+            <th scope="col"  class="bg-info text-white">Plate Number</th>
+            <th scope="col"  class="bg-info text-white">Model</th>
+            <th scope="col"  class="bg-info text-white">Brand</th>
+            <th scope="col"  class="bg-info text-white">Maintenance Description</th>
+            <th scope="col"  class="bg-info text-white">Start Date</th>
+            <th scope="col"  class="bg-info text-white">End Date</th>
+            <th scope="col"  class="bg-info text-white">Cost</th>
+            <th scope="col"  class="bg-info text-white">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% set i = 1 %}
+            {% for item in queryResult %}
+          <tr>
+            <th scope="row">{{i}}</th>
+            <td class="align-middle"><div class="rounded-2" style="width:150px; height:70px; background-image:url('cars-photo/{{item.image}}'); background-size:cover; background-position:center"></div></td>
+            <td class="align-middle">{{item.plate_number}}</td>
+            <td class="align-middle">{{item.model}}</td>
+            <td class="align-middle">{{item.brand}}</td>
+            <td class="align-middle">{{item.description}}</td>
+            <td class="align-middle">{{item.start_date}}</td>
+            <td class="align-middle">{{item.end_date}}</td>
+            <td class="align-middle">{{item.cost|number_format(2, '.', ',') }}</td>
+            <td class="align-middle">
+                
+                <a href="maintenance-update.php?id={{item.maintenance_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                <!-- <a href=""><i class="bi bi-x-square text-danger row-delete"></i></a> -->
+                <a type="button" 
+                    class="border-0 row-delete" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#confirmation-modal"
+                    data-id="{{item.maintenance_id}}"
+                    data-plate_number="{{item.plate_number}}"
+                    data-model="{{item.model}}"
+                    data-brand="{{item.brand}}"
+                    data-description="{{item.description}}"
+                    data-start_date="{{item.start_date}}"
+                    data-end_date="{{item.end_date}}"
+                    data-cost="{{item.cost}}">
+                    <i class="bi bi-x-square text-danger"></i></a>
+            </td>
+          </tr>
+          {% set i = i + 1 %}
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+<!--Confirmation Modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmation-modal" aria-hidden="true">
+    <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post">
+           <div class="modal-body">
+                <div>You are trying to delete a following record</div>
+                <div id="row-data"></div>
+            </div>
+        <div class="modal-footer">
+        <input type="hidden" name="maintenance-id" id="txt-confirm">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+        </div>
+        
+    </form>
+    </div>
+    </div>
+    </div>
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(){
+            $( ".row-delete" ).each(function( index ) {
+                $(this).on("click",function(){
+                    $("#row-data").html(
+                        `<ul>
+                            <li>Plate number: ${$(this).data("plate_number")}</li>
+                            <li>Model: ${$(this).data("model")}</li>
+                            <li>Brand: ${$(this).data("brand")}</li>
+                            <li>Description: ${$(this).data("description")}</li>
+                            <li>Start Date: ${$(this).data("start_date")}</li>
+                            <li>End Date: ${$(this).data("end_date")}</li>
+                            <li>Cost: ${$(this).data("cost")}</li>
+                        </ul>`
+                    );
+                    $("#txt-confirm").val($(this).data("id"));
+                    console.log($(this).data("id"));
+                })
+            });
+        });
+    </script>
+
+{% endblock %}

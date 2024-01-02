@@ -1,0 +1,186 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    
+    {% for item in queryResult %}
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <h2>{{item.brand}} {{item.model}}</h2><div class=" text-white py-2 bg-dark px-3 rounded-1 ms-3">{{item.plate_number}}</div>
+        </div>
+        <div>
+            <a href="car-list.php" class="py-2 px-3 btn btn-outline-info"><i class="bi bi-arrow-90deg-left me-2"></i>Go back</a>
+            <a href="car-update.php?id={{item.car_id}}" class="py-2 px-3 btn btn-info text-white"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+        </div>
+        
+    </div>
+    <div class="rounded-2 my-3" style="height:400px; background-image:url('cars-photo/{{item.image}}'); background-size:cover; background-position:center">
+    </div>
+    <div class="row">
+        <h3>Car Information</h3>
+        <div class="col col-6">
+            <p><strong>Plate Number:</strong> {{item.plate_number}}</p>
+            <p><strong>Model:</strong> {{item.model}}</p>
+            <p><strong>Brand:</strong> {{item.brand}}</p>
+            <p><strong>Color:</strong> {{item.color}}</p>
+            <p><strong>Status:</strong>
+                <span class = "py-2 px-3 rounded-1 
+                {% if item.Status=='Available' %}
+                    bg-success text-white
+                {% endif %}
+                {% if item.Status=='Request' %}
+                    bg-warning text-white
+                {% endif %}
+                {% if item.Status=='Rent' %}
+                    bg-primary text-white
+                {% endif %}
+                {% if item.Status=='Maintanance' %}
+                    bg-secondary text-white
+                {% endif %}
+                ">{{item.Status}}</span> </p>
+            <p><strong>Rental Price:</strong> {{item.rental_price|number_format(2, '.', ',')}}</p>
+            <p><strong>Purchase Date:</strong> {{item.purchase_date}}</p>
+            <p><strong>Purchase Price:</strong> {{item.purchase_price|number_format(2, '.', ',')}}</p>
+            {% endfor %}
+        </div><!--col-->
+        <div class="col col-6" style="font-family: 'Archivo Narrow', sans-serif;">
+            {% for item in pnl %}
+            <div class="row">
+                <div class="col col-12">
+                    <div class="rounded-2 p-3 shadow-sm text-center" style="border:1px solid {% if item.PNL >= 0 %} #008800 {% else %} #ff0000 {% endif %}; border-left-width:10px; border-left-style: solid;">
+                            <h4 style="font-weight:400; text-transform: uppercase; color:#999;">Profit and Loss</h4>
+                            <div style="font-weight:600; font-size:2rem">{{item.PNL|number_format(2, '.', ',')}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col col-6">
+                    <div class="rounded-2 shadow-sm text-center" style="border:1px solid #008800; border-left:10px solid #008800">
+                        <h4 style="font-size:0.9rem; text-transform: uppercase;color:#999;" class="pt-2">Income</h4>
+                        <div style="font-weight:600; font-size:1.8rem">{{item.Profit|number_format(2, '.', ',')}}</div>
+                    </div>
+                </div>
+                <div class="col col-6">
+                    <div class="rounded-2 shadow-sm text-center" style="border:1px solid #ff0000; border-left:10px solid #ff0000">
+                        <h4 style="font-size:0.9rem; text-transform: uppercase;color:#999;" class="pt-2">Expense</h4>
+                        <div style="font-weight:600; font-size:1.8rem">-{{item.Loss|number_format(2, '.', ',')}}</div>
+                    </div>
+                </div>
+                
+            </div><!--row-->
+            
+            
+            {% endfor %}
+        </div><!--col-->
+    </div><!--row-->
+    {% if rental_detail is not empty %}
+    <div class="row mt-5">
+        <h3>Rent Detail</h3>
+        <div class="col col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col"  class="bg-info text-white">Rental ID</th>
+                      <th scope="col"  class="bg-info text-white">Start Date</th>
+                      <th scope="col"  class="bg-info text-white">End Date</th>
+                      <th scope="col"  class="bg-info text-white">User</th>
+                      <th scope="col"  class="bg-info text-white">Email</th>
+                      <th scope="col"  class="bg-info text-white">Rental Rate</th>
+                      <th scope="col"  class="bg-info text-white">Amount</th>
+                      <th scope="col"  class="bg-info text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in rental_detail %}
+                    <td class="align-middle">{{item.rental_id}}</td>
+                    <td class="align-middle">{{item.rental_start_date}}</td>
+                    <td class="align-middle">{{item.rental_end_date}}</td>
+                    <td class="align-middle">{{item.name}}<a href="../user/user-view.php?id={{item.user_id}}" target="_blank"><i class="bi bi-arrow-up-right-square text-success ms-2"></i></a></td>
+                    <td class="align-middle">{{item.email}}</td>
+                    <td class="align-middle">{{item.rental_price|number_format(2, '.', ',') }}</td>
+                    <td class="align-middle">{{item.amount|number_format(2, '.', ',') }}</td>
+                    <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                        <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                        <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div><!--col-->
+    </div><!--row-->
+    {% endif %}
+    {% if maintenancess_detail is not empty %}
+    <div class="row mt-5">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Maintenance Detail </h3><a href="maintenance-create.php"><i class="bi bi-plus-square text-success" style="font-size:1.2rem"></i></a>
+        </div>
+        
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col"  class="bg-info text-white">Maintanace ID</th>
+                      <th scope="col"  class="bg-info text-white">Description</th>
+                      <th scope="col"  class="bg-info text-white">Start Date</th>
+                      <th scope="col"  class="bg-info text-white">End Date</th>
+                      <th scope="col"  class="bg-info text-white">Cost</th>
+                      <th scope="col"  class="bg-info text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in maintenance_detail %}
+                    <td class="align-middle">{{item.maintenance_id}}</td>
+                    <td class="align-middle">{{item.description}}</td>
+                    <td class="align-middle">{{item.start_date}}</td>
+                    <td class="align-middle">{{item.end_date}}</td>
+                    <td class="align-middle">{{item.cost|number_format(2, '.', ',')}}</td>
+                    <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                        <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                        <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div><!--row-->
+    {% endif %}
+    {% if roadtax_detail is not empty %}
+    <div class="row mt-5">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Road Tax Detail </h3><a href="roadtax-create.php"><i class="bi bi-plus-square text-success" style="font-size:1.2rem"></i></a>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col"  class="bg-info text-white">Road Tax ID</th>
+                      <th scope="col"  class="bg-info text-white">Amount</th>
+                      <th scope="col"  class="bg-info text-white">Payment Date</th>
+                      <th scope="col"  class="bg-info text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in roadtax_detail %}
+                    <td class="align-middle">{{item.road_tax_id}}</td>
+                    <td class="align-middle">{{item.amount|number_format(2, '.', ',')}}</td>
+                    <td class="align-middle">{{item.payment_date}}</td>
+                    <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                        <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                        <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div><!--row-->
+    {% endif %}
+</div><!--wrapper-->
+
+{% endblock %}
+
+{% block script %}
+
+  {% endblock %}
