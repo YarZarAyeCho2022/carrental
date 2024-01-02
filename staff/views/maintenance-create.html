@@ -16,7 +16,7 @@
         <div class="mb-3">
             <label for="car" class="form-label">Car</label>
             <select class="form-select" required name="car-id">
-                <option style="">Select car</option>
+                <option>Select car</option>
                 {% for item in car_list %}
                 <option value="{{item.car_id}}">{{item.brand}} - {{item.model}} [{{item.plate_number}}]</option>
                 {% endfor %}
