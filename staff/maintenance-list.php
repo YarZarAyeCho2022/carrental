@@ -40,6 +40,7 @@ if (isset($_POST['delete'])){
         /* Issue the real SELECT statement and work with the results */
         $sql = "DELETE FROM carmaintenance WHERE maintenance_id = ".$maintenance_id;
         $query = $link->query($sql);
+        echo "<meta http-equiv='refresh' content='0'>";
         $action_message = "Row has been deleted successfully.";
     }
     /* No rows matched -- do something else */
