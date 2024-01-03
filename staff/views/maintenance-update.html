@@ -1,14 +1,12 @@
 
 {% extends "base.html" %}
-
-
 {% block title %}Index{% endblock %}
 {% block head %}
     {{parent()}}
 {% endblock %}    
 {% block content %}
 <div class="wrapper p-5 flex-fill">
-    <h2>Create Maintenance Record</h2>
+    <h2>Update Maintenance Record</h2>
     {% if success_message is not empty %}
     <div class="bg-success text-white rounded-1 my-2 p-1">{{success_message}}</div>
     {% endif %}
@@ -54,7 +52,7 @@
             <input type="number" min="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="cost" name="cost" value="{{cost}}" required>
         </div>
 
-        <button type="submit" class="btn btn-primary" name="create-maintenance">Create</button>
+        <button type="submit" class="btn btn-primary" name="update-maintenance">Create</button>
     </form>
 </div>
 

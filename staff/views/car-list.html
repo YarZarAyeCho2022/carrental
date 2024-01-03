@@ -46,7 +46,16 @@
             <td class="align-middle">
                 <a href="car-view.php?id={{item.car_id}}"><i class="bi bi-eye text-success me-2"></i></a>
                 <a href="car-update.php?id={{item.car_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
-                <a href="#"><i class="bi bi-x-square text-danger"></i></a>
+                <a type="button" 
+                    class="border-0 row-delete" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#confirmation-modal"
+                    data-id="{{item.car_id}}"
+                    data-plate_number="{{item.plate_number}}"
+                    data-model="{{item.model}}"
+                    data-brand="{{item.brand}}"
+                    data-image="{{item.image}}">
+                    <i class="bi bi-x-square text-danger"></i></a>
             </td>
           </tr>
           {% set i = i + 1 %}
@@ -54,9 +63,48 @@
         </tbody>
       </table>
 </div>
-
+<!--Confirmation Modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmation-modal" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+         <div class="modal-body">
+              <div>You are trying to delete a following record</div>
+              <div id="row-data"></div>
+          </div>
+      <div class="modal-footer">
+      <input type="hidden" name="car-id" id="txt-confirm">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+      </div>
+      
+  </form>
+  </div>
+  </div>
+  </div>
 {% endblock %}
 
 {% block script %}
-
+<script>
+  $(document).ready(function(){
+      $( ".row-delete" ).each(function( index ) {
+          $(this).on("click",function(){
+              $("#row-data").html(
+                  `<ul>
+                      <li>Plate number: ${$(this).data("plate_number")}</li>
+                      <li>Model: ${$(this).data("model")}</li>
+                      <li>Brand: ${$(this).data("brand")}</li>
+                  </ul>
+                  <div class="rounded-2" style="width:100%; height:150px; background-image:url('cars-photo/${$(this).data("image")}'); background-size:cover; background-position:center" ></div>`
+              );
+              $("#txt-confirm").val($(this).data("id"));
+              console.log($(this).data("id"));
+          })
+      });
+  });
+</script>
 {% endblock %}

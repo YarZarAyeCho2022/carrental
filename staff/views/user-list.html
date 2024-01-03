@@ -1,0 +1,113 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    <div class="d-flex justify-content-between align-items-center">
+    <h2>User List</h2>
+    <a class="btn btn-info text-white" href="user-create.php"><i class="bi bi-plus-square me-2"></i>Add new</a>
+    </div>
+    {% if action_message is not empty %}
+    <div class="bg-success text-white rounded-1 my-2 p-1">{{action_message}}</div>
+    {% endif %}
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col"  class="bg-info text-white">User ID</th>
+            <th scope="col"  class="bg-info text-white">Photo</th>
+            <th scope="col"  class="bg-info text-white">Name</th>
+            <th scope="col"  class="bg-info text-white">Email</th>
+            <th scope="col"  class="bg-info text-white">User Type</th>
+            <th scope="col"  class="bg-info text-white">Passport</th>
+            <th scope="col"  class="bg-info text-white">Contact</th>
+            <th scope="col"  class="bg-info text-white">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% set i = 1 %}
+            {% for item in queryResult %}
+          <tr>
+            <th class="align-middle" scope="row">{{item.user_id}}</th>
+            
+            <td class="align-middle"><div class="rounded-2" style="width:70px; height:70px; background-image:url('../user/photos/{{item.photo}}'); background-size:cover; background-position:center"></div></td>
+            <td class="align-middle">{{item.name}}</td>
+            <td class="align-middle">{{item.email}}</td>
+            <td class="align-middle">{{item.user_type|capitalize }}</td>
+            <td class="align-middle">{{item.passport_number}}</td>
+            <td class="align-middle">{{item.contact_number}}</td>
+            <td class="align-middle">
+                <a href="user-view.php?id={{item.user_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                <a href="user-update.php?id={{item.user_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                <a type="button" 
+                    class="border-0 row-delete" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#confirmation-modal"
+                    data-id="{{item.user_id}}"
+                    data-name="{{item.name}}"
+                    data-email="{{item.email}}"
+                    data-user_type="{{item.user_type}}"
+                    data-photo="{{item.photo}}">
+                    <i class="bi bi-x-square text-danger"></i></a>
+            </td>
+          </tr>
+          {% set i = i + 1 %}
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+<!--Confirmation Modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmation-modal" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+         <div class="modal-body">
+              <div>You are trying to delete a following record</div>
+              <div id="row-data"></div>
+          </div>
+      <div class="modal-footer">
+      <input type="hidden" name="user-id" id="txt-confirm">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+      </div>
+      
+  </form>
+  </div>
+  </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+      $( ".row-delete" ).each(function( index ) {
+          $(this).on("click",function(){
+              $("#row-data").html(
+                  `
+                  <div class="row mt-2">
+                    <div class="col col-4">
+                        <img src="../user/photos/${$(this).data("photo")}" style="width:150px; height:150px;">
+                    </div>
+                    <div class="d-flex flex-column justify-content-end col col-8">
+                        <div style="font-weight:600; font-size:1.5rem">User ID: ${$(this).data("id")}</div>
+                        <div>Name: ${$(this).data("name")}</div>
+                        <div>Emal: ${$(this).data("email")}</div>
+                        <div>User Type: ${$(this).data("user_type")}</div>
+                    </div>  
+                  </div>`
+              );
+              $("#txt-confirm").val($(this).data("id"));
+              console.log($(this).data("id"));
+          })
+      });
+  });
+</script>
+{% endblock %}

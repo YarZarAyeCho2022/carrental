@@ -1,0 +1,84 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <h2>Update User</h2>
+        </div>
+        <div>
+            <a href="user-list.php" class="py-2 px-3 btn btn-outline-info"><i class="bi bi-list-task me-2"></i>List Users</a>
+            <a href="user-view.php?id={{user_id}}" class="py-2 px-3 btn btn-info text-white"><i class="bi bi-eye me-2"></i>View</a>
+        </div>
+        
+    </div>
+    {% if success_register is not empty %}
+    <div class="bg-success text-white rounded-1 my-2 p-1">{{success_register}}</div>
+    {% endif %}
+    <form method="post" enctype = "multipart/form-data">
+        <div class="mb-3">
+            <label for="user-name" class="form-label">User name</label>
+            <input type="text" class="form-control" id="user-name" name="user-name" value="{{user_name}}" required>
+        </div>
+        <div class="mb-3">
+           <label for="email" class="form-label">Email</label>
+           <input type="text" class="form-control" id="email" name="email" value="{{email}}" required>
+           {% if email_err is not empty %}
+           <span class="small text-warning">{{email_err}}</span>
+           {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="user-type" class="form-label">User type</label>
+            <select class="form-select" required name="insurance-type">
+                <option value="user" {% if user_type=='user' %}selected {% endif %}>User</option>
+                <option value="staff" {% if user_type=='staff' %}selected {% endif %}>Staff</option>
+            </select>
+            {% if user_type_err is not empty %}
+           <span class="small text-warning">{{user_type_err}}</span>
+           {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="passport_number" class="form-label">Passport Number</label>
+            <input type="text" class="form-control" id="passport_number" name="passport_number" value="{{passport_number}}">
+        </div>
+        <div class="mb-3">
+            <label for="contact_number" class="form-label">Contact Number</label>
+            <input type="text" class="form-control" id="color" name="contact_number" value="{{contact_number}}">
+        </div>
+        
+        <div class="mb-3">
+            <label for="formFile" class="form-label">User photo</label><br>
+            <img src="../user/photos/{{photo}}" style="width:70; height:70px;" class="rounded-2">
+            <input class="form-control" type="file" id="formFile" name="photo">
+            
+            {% if photo_err is not empty %}
+            <span class="small text-warning">{{photo_err}}</span>
+            {% endif %}
+        </div>
+        <input type="hidden" value="{{image}}" name="old-photo" />
+        <input type="hidden" value="{{plate_number}}" name="old-plate-number" required>
+        <input type="hidden" value="{{car_id}}" name="car-id">
+        <button type="submit" class="btn btn-info text-white" name="update-car">Update</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        
+        $('#datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+    });
+</script>
+  {% endblock %}

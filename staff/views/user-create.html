@@ -7,7 +7,8 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="container">
+<div class="wrapper p-5 flex-fill">
+    <h2>Create User</h2>
     {% if success_register is not empty %}
     <div class="bg-success text-white rounded-1 my-2 p-1">{{success_register}}</div>
     {% endif %}
@@ -55,9 +56,13 @@
                 {% if photo_err is not empty %}
                 <span class="small text-warning">{{photo_err}}</span>
                 {% endif %}
-              </div>
-        </div>
-            <button type="submit" class="btn btn-primary" name="create-user">Register</button>
+            </div>
+        
+            <button type="submit" class="btn btn-info text-white" name="create-user">Register</button>
     </form>
 </div>
+
+{% endblock %}
+
+{% block script %}
 {% endblock %}
