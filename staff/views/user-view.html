@@ -1,0 +1,154 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    
+    {% for item in user_detail %}
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <h2>#{{item.user_id}}: {{item.name}}</h2><div class=" text-white py-2 bg-dark px-3 rounded-1 ms-3">{{item.email}}</div>
+        </div>
+        <div>
+            <a href="user-list.php" class="py-2 px-3 btn btn-outline-info"><i class="bi bi-arrow-90deg-left me-2"></i>Go back</a>
+            <a href="user-update.php?id={{item.car_id}}" class="py-2 px-3 btn btn-info text-white"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+    
+        <div class="col col-3">
+            <div style="width:300px; height:300px; background-image:url('../user/photos/{{item.photo}}'); background-size:cover; background-position:center" class="rounded-3 shadow-sm">
+
+            </div>
+            
+        </div><!--col-->
+        <div class="col col-9">
+            <p><strong>User ID:</strong> {{item.user_id}}</p>
+            <p><strong>Name:</strong> {{item.name}}</p>
+            <p><strong>Email:</strong> {{item.email}}</p>
+            <p><strong>User Type:</strong> {{item.user_type|capitalize}}</p>
+            <p><strong>Passport:</strong> {{item.passport_number}}</p>
+            <p><strong>Contact Number:</strong> {{item.contact_number}}</p>
+            {% endfor %}
+        </div><!--col-->
+        
+    </div><!--row-->
+    {% if rental_detail is not empty %}
+    <div class="row mt-5">
+        <h3>Rent Detail</h3>
+        <div class="col col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col"  class="bg-info text-white">Image</th>
+                      <th scope="col"  class="bg-info text-white">Plate Number</th>
+                      <th scope="col"  class="bg-info text-white">Brand</th>
+                      <th scope="col"  class="bg-info text-white">Model</th>
+                      <th scope="col"  class="bg-info text-white">Rental Start Date</th>
+                      <th scope="col"  class="bg-info text-white">Rental End Date</th>
+                      <th scope="col"  class="bg-info text-white">Total Days</th>
+                      <th scope="col"  class="bg-info text-white">Daily rate</th>
+                      <th scope="col"  class="bg-info text-white">Amount</th>
+                      <th scope="col"  class="bg-info text-white">Request Date</th>
+                      <th scope="col"  class="bg-info text-white">Request Status</th>
+                      <th scope="col"  class="bg-info text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in rental_detail %}
+                    <td class="align-middle"><div class="rounded-2" style="width:150px; height:70px; background-image:url('cars-photo/{{item.image}}'); background-size:cover; background-position:center"></div></td>
+                    <td class="align-middle">{{item.plate_number}}</td>
+                    <td class="align-middle">{{item.brand}}</td>
+                    <td class="align-middle">{{item.model}}</td>
+                    <td class="align-middle">{{item.rental_start_date}}</td>
+                    <td class="align-middle">{{item.rental_end_date}}</td>
+                    <td class="align-middle">{{item.total_days}}</td>
+                    <td class="align-middle">{{item.daily_price|number_format(2, '.', ',')}}</td>
+                    <td class="align-middle">{{item.total_amount|number_format(2, '.', ',')}}</td>
+                    <td class="align-middle">{{item.request_date}}</td>
+                    <td class="align-middle">{{item.rental_stauts}}</td>
+                    <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                        <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                        <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div><!--col-->
+    </div><!--row-->
+    {% endif %}
+    {% if maintenancess_detail is not empty %}
+    <div class="row mt-5">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Maintenance Detail </h3><a href="maintenance-create.php"><i class="bi bi-plus-square text-success" style="font-size:1.2rem"></i></a>
+        </div>
+        
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col"  class="bg-info text-white">Maintanace ID</th>
+                      <th scope="col"  class="bg-info text-white">Description</th>
+                      <th scope="col"  class="bg-info text-white">Start Date</th>
+                      <th scope="col"  class="bg-info text-white">End Date</th>
+                      <th scope="col"  class="bg-info text-white">Cost</th>
+                      <th scope="col"  class="bg-info text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in maintenance_detail %}
+                    <td class="align-middle">{{item.maintenance_id}}</td>
+                    <td class="align-middle">{{item.description}}</td>
+                    <td class="align-middle">{{item.start_date}}</td>
+                    <td class="align-middle">{{item.end_date}}</td>
+                    <td class="align-middle">{{item.cost|number_format(2, '.', ',')}}</td>
+                    <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                        <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                        <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div><!--row-->
+    {% endif %}
+    {% if roadtax_detail is not empty %}
+    <div class="row mt-5">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3>Road Tax Detail </h3><a href="roadtax-create.php"><i class="bi bi-plus-square text-success" style="font-size:1.2rem"></i></a>
+        </div>
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                      <th scope="col"  class="bg-info text-white">Road Tax ID</th>
+                      <th scope="col"  class="bg-info text-white">Amount</th>
+                      <th scope="col"  class="bg-info text-white">Payment Date</th>
+                      <th scope="col"  class="bg-info text-white">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in roadtax_detail %}
+                    <td class="align-middle">{{item.road_tax_id}}</td>
+                    <td class="align-middle">{{item.amount|number_format(2, '.', ',')}}</td>
+                    <td class="align-middle">{{item.payment_date}}</td>
+                    <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                        <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                        <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    {% endfor %}
+                  </tbody>
+            </table>
+        </div>
+    </div><!--row-->
+    {% endif %}
+</div><!--wrapper-->
+
+{% endblock %}
+
+{% block script %}
+
+  {% endblock %}

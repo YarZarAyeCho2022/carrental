@@ -28,15 +28,15 @@
             <input type="text" class="form-control" id="user-name" name="user-name" value="{{user_name}}" required>
         </div>
         <div class="mb-3">
-           <label for="email" class="form-label">Email</label>
-           <input type="text" class="form-control" id="email" name="email" value="{{email}}" required>
+           <label for="new-email" class="form-label">Email</label>
+           <input type="email" class="form-control" id="new-email" name="new-email" value="{{email}}" required>
            {% if email_err is not empty %}
            <span class="small text-warning">{{email_err}}</span>
            {% endif %}
         </div>
         <div class="mb-3">
             <label for="user-type" class="form-label">User type</label>
-            <select class="form-select" required name="insurance-type">
+            <select class="form-select" required name="user-type">
                 <option value="user" {% if user_type=='user' %}selected {% endif %}>User</option>
                 <option value="staff" {% if user_type=='staff' %}selected {% endif %}>Staff</option>
             </select>
@@ -45,12 +45,12 @@
            {% endif %}
         </div>
         <div class="mb-3">
-            <label for="passport_number" class="form-label">Passport Number</label>
-            <input type="text" class="form-control" id="passport_number" name="passport_number" value="{{passport_number}}">
+            <label for="passport-number" class="form-label">Passport Number</label>
+            <input type="text" class="form-control" id="passport-number" name="passport-number" value="{{passport_number}}">
         </div>
         <div class="mb-3">
-            <label for="contact_number" class="form-label">Contact Number</label>
-            <input type="text" class="form-control" id="color" name="contact_number" value="{{contact_number}}">
+            <label for="contact-number" class="form-label">Contact Number</label>
+            <input type="text" class="form-control" id="contact-number" name="contact-number" value="{{contact_number}}">
         </div>
         
         <div class="mb-3">
@@ -62,10 +62,10 @@
             <span class="small text-warning">{{photo_err}}</span>
             {% endif %}
         </div>
-        <input type="hidden" value="{{image}}" name="old-photo" />
-        <input type="hidden" value="{{plate_number}}" name="old-plate-number" required>
-        <input type="hidden" value="{{car_id}}" name="car-id">
-        <button type="submit" class="btn btn-info text-white" name="update-car">Update</button>
+        <input type="hidden" value="{{photo}}" name="old-photo" />
+        <input type="hidden" value="{{email}}" name="old-email" required>
+        <input type="hidden" value="{{user_id}}" name="user-id">
+        <button type="submit" class="btn btn-info text-white" name="update-user">Update</button>
     </form>
 </div>
 
