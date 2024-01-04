@@ -43,19 +43,15 @@
                 <input type="text" class="form-control" id="rental-start-date" name="rental-start-date" value="{{rental_start_date}}"/>
                 <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
             </div>
-            {% if rental_start_date_err is not empty %}
-                <span class="small text-warning">{{rental_start_date_err}}</span>
-            {% endif %}
-        </div>
+                <span class="small text-warning" id="rental-start-date-err"></span>
+            </div>
         <div class="mb-3">
             <label for="rental-end-date" class="col-form-label">Rental end date</label>
             <div class="input-group date" id="end-datepicker">
                 <input type="text" class="form-control" id="rental-end-date" name="rental-end-date" value="{{rental_end_date}}"/>
                 <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
             </div>
-            {% if end_date_err is not empty %}
-                <span class="small text-warning">{{rental_end_date_err}}</span>
-            {% endif %}
+            <span class="small text-warning" id="rental-end-date-err"></span>
         </div>
         <div class="mb-3">
             <label for="total-day" class="form-label">Total Day(s)</label>
@@ -88,15 +84,60 @@
         });
 
         // Ajax
+        $("#rental-start-date").change(function(){
+            $.ajax({
+            url: 'ajax-check-date.php',
+            type: 'POST',
+            data: jQuery.param({ "car_id":$("#select-car").val(), "calendar-start-check":true, "rental-start-date":$(this).val()}) ,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            
+            success: function (response) {
+                if(response == false ){
+                    $("#rental-start-date-err").html("The date is already occupied.");
+                    $("#rental-start-date").val('');
+                }
+                else {
+                    $("#rental-start-date-err").html('');
+                }
+            },
+            error: function () {
+                alert("error");
+                }
+            }); 
+        }); //start date check 
+
+        $("#rental-end-date").change(function(){
+            $.ajax({
+            url: 'ajax-check-date.php',
+            type: 'POST',
+            data: jQuery.param({ "car_id":$("#select-car").val(), "calendar-end-check":true, "rental-end-date":$(this).val()}) ,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            
+            success: function (response) {
+                
+                if(response == false ){
+                    $("#rental-end-date-err").html("The date is already occupied.");
+                    $("#rental-end-date").val('');
+                }
+                else {
+                    console.log(response);
+                    $("#rental-end-date-err").html('');
+                }
+            },
+            error: function () {
+                alert("error");
+                }
+            }); 
+        }); //start date check 
+
         $("#select-car").change(function(){
             $.ajax({
             url: 'ajax-check-car.php',
             type: 'POST',
-            data: jQuery.param({ "car_id": $(this).val(), "car_change":true}) ,
+            data: jQuery.param({ "car_id": $(this).val(), "car_change":true}),
             contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
             
             success: function (response) {
-                console.log(response);
                 $("#daily-price").val(parseFloat(response));
                 $("#car-output").html(response);
                 calcAmount();
@@ -105,15 +146,13 @@
                 alert("error");
                 }
             }); 
+            
         });
         
         function calcDays(startDate,endDate){
             var date1=new Date(startDate)
             var date2=new Date(endDate)
-            console.log(date1.getTime());
-            console.log(date2.getTime());
             var milli_secs = date2.getTime() - date1.getTime();
-            console.log(milli_secs);
             var days = milli_secs / (1000 * 3600 *24);
             return days+1;
         }
