@@ -1,0 +1,183 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    {% for item in rental_detail %}
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center">
+            <h2>Rental Detail</h2>
+        </div>
+        <div>
+            <a href="rental-list.php" class="py-2 px-3 btn btn-outline-info"><i class="bi bi-arrow-90deg-left me-2"></i>Go back</a>
+            <a href="rental-update.php?id={{item.car_id}}" class="py-2 px-3 btn btn-info text-white"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+        </div>
+    </div>
+    
+    <div class="row mt-3">
+        <div class="col col-8 mr-auto">
+
+            <div class="row">
+                <div class="col col-6">
+                    <div style="width:350px; height:150px; background-image:url('cars-photo/{{item.car_image}}'); background-size:cover; background-position:center" class="rounded-3 shadow-sm">
+                    </div>
+                    <p class="mt-3"><strong>Plate Number:</strong> {{item.plate_number}}</p>
+                    <p><strong>Model:</strong> {{item.model}}</p>
+                    <p><strong>Brand:</strong> {{item.brand}}</p>
+                    <p><strong>Color:</strong> {{item.color}}</p>        
+                </div><!--col-->
+                <div class="col col-6 text-end">
+                    <div class="ms-auto" style="width:150px; height:150px; background-image:url('../user/photos/{{item.photo}}'); background-size:cover; background-position:center" class="rounded-3 shadow-sm">
+                    </div>
+                    <p class="mt-3"><strong>ID:</strong> {{item.user_id}}</p>
+                    <p><strong>Name:</strong> {{item.name}}</p>
+                    <p><strong>Email:</strong> {{item.email}}</p>
+                    <p><strong>Contact Number:</strong> {{item.contact_number}}</p>        
+                </div><!--col-->
+            </div><!--row-->
+            <div class="row mt-2 pt-2" style="border-top:1px solid #888888">
+                <div class="col col-12">
+                    <div class="row">
+                        <div class="col col-4">
+                            <p><strong>Start Date:</strong> {{item.rental_start_date}}</p>
+                        </div>
+                        <div class="col col-4 text-center">
+                            <p><strong>End Date:</strong> {{item.rental_end_date}}</p>
+                        </div>
+                        <div class="col col-4 text-end">
+                            <p><strong>Total Days:</strong> {{item.total_days}}</p>
+                        </div>
+                    </div>
+                    <div class="row py-3">
+                        <div class="col col-4">
+                            <p><strong>Daily Price:</strong> {{item.daily_price}}</p>
+                        </div>
+                        <div class="col col-4 text-center">
+                            <p><strong>Total Amount:</strong> {{item.total_amount}}</p>
+                        </div>
+                        <div class="col col-4 text-end">
+                            <p><strong>Status:</strong>
+                                {% if item.rental_status == 'Approved' %}
+                                    Approved <i class="bi bi-check-circle-fill text-success ms-2"></i>
+                                {% endif %}
+                                {% if item.rental_status == 'Rejected' %}
+                                    Rejected <i class="bi bi-x-circle-fill text-danger ms-2"></i>
+                                {% endif %}
+                                {% if item.rental_status == 'Waiting approval' %}
+                                    Waiting approval <i class="bi bi-exclamation-circle-fill text-warning ms-2"></i>
+                                {% endif %}
+                                {% if item.rental_status == 'Returned' %}
+                                    Returned <i class="bi bi-arrow-left-circle-fill text-primary ms-2"></i>
+                                {% endif %}
+                                </p>
+                        </div><!--col-->
+                    </div><!--row-->
+                    <div class="row py-3" style="border-top:1px solid #888888;">
+                        <div class="col col-12">
+                            <h4>Change Status</h4>
+                            <a type="button" 
+                                class="change-status btn btn-{% if item.rental_status=='Approved' %}{% else %}outline-{% endif %}success"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#confirmation-modal"
+                                data-id="{{item.rental_id}}"
+                                data-plate_number="{{item.plate_number}}"
+                                data-model="{{item.model}}"
+                                data-name="{{item.name}}"
+                                data-rental_status="{{item.rental_status}}"
+                                data-new_status="Approved"
+                                >Approved</a>
+                            <a type="button" class="change-status btn btn-{% if item.rental_status=='Rejected' %}{% else %}outline-{% endif %}danger"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#confirmation-modal"
+                                data-id="{{item.rental_id}}"
+                                data-plate_number="{{item.plate_number}}"
+                                data-model="{{item.model}}"
+                                data-name="{{item.name}}"
+                                data-rental_status="{{item.rental_status}}"
+                                data-new_status="Rejected"
+                            >Rejected</a>
+                            <a type="button" class="change-status btn btn-{% if item.rental_status=='Waiting approval' %}{% else %}outline-{% endif %}warning"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#confirmation-modal"
+                                data-id="{{item.rental_id}}"
+                                data-plate_number="{{item.plate_number}}"
+                                data-model="{{item.model}}"
+                                data-name="{{item.name}}"
+                                data-rental_status="{{item.rental_status}}"
+                                data-new_status="Waiting approval"
+                            >Pending Request</a>
+                            <a type="button" class="change-status btn btn-{% if item.rental_status=='Returned' %}{% else %}outline-{% endif %}primary"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#confirmation-modal"
+                                data-id="{{item.rental_id}}"
+                                data-plate_number="{{item.plate_number}}"
+                                data-model="{{item.model}}"
+                                data-name="{{item.name}}"
+                                data-rental_status="{{item.rental_status}}"
+                                data-new_status="Returned"
+                            >Returned</a>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div><!--col-->
+    </div><!--row-->
+    {% endfor %}
+</div><!--wrapper-->
+<!--Confirmation Modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmation-modal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    <div>You are trying to change the status of following rental record.</div>
+                    <div id="row-data"></div>
+                </div>
+                <div class="modal-footer">
+                    <input type="hidden" name="rental-id" id="txt-rental-id">
+                    <input type="hidden" name="new-rental-status" id="txt-new-rental-status">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-info text-white" name="change">Change</button>
+                </div>
+            </form>
+        </div><!--modal-content-->
+    </div><!--modal dialog-->
+</div><!--modal-->
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        $( ".change-status" ).each(function( index ) {
+            $(this).on("click",function(){
+                $("#row-data").html(
+                    `
+                    <div class="row mt-2">
+                      <div class="col col-12">
+                          <p><strong>Rental ID</strong>: ${$(this).data("id")}</p>
+                          <p><strong>Car Plate No</strong>: ${$(this).data("plate_number")}</p>
+                          <p><strong>User Name</strong>: ${$(this).data("name")}</p>
+                          <p><strong>Current Status</strong>: ${$(this).data("rental_status")}</p>
+                          <p><strong>New Status</strong>: ${$(this).data("new_status")}</p>
+                      </div>  
+                    </div>`
+                );
+                $("#txt-rental-id").val($(this).data("id"));
+                $("#txt-new-rental-status").val($(this).data("new_status"));
+                
+            })
+        });
+    });
+  </script>
+
+{% endblock %}

@@ -1,0 +1,121 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    <div class="d-flex justify-content-between align-items-center">
+    <h2>Rental List</h2>
+    <a class="btn btn-info text-white" href="rental-create.php"><i class="bi bi-plus-square me-2"></i>Add new</a>
+    </div>
+    
+    <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col"  class="bg-info text-white">Rental ID</th>
+            <th scope="col"  class="bg-info text-white">Car</th>
+            <th scope="col"  class="bg-info text-white">Plate Number</th>
+            <th scope="col"  class="bg-info text-white">User</th>
+            <th scope="col"  class="bg-info text-white">User ID</th>
+            <th scope="col"  class="bg-info text-white">Name</th>
+            <th scope="col"  class="bg-info text-white">Email</th>
+            <th scope="col"  class="bg-info text-white">Start Date</th>
+            <th scope="col"  class="bg-info text-white">End Date</th>
+            <th scope="col"  class="bg-info text-white">Total Day</th>
+            <th scope="col"  class="bg-info text-white">Daily Price</th>
+            <th scope="col"  class="bg-info text-white">Total Amount</th>
+            <th scope="col"  class="bg-info text-white">Rental status</th>
+            <th scope="col"  class="bg-info text-white">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% set i = 1 %}
+            {% for item in queryResult %}
+          <tr>
+            <th class="align-middle" scope="row">{{item.rental_id}}</th>
+            <td class="align-middle"><div class="rounded-2" style="width:150px; height:70px; background-image:url('cars-photo/{{item.car_image}}'); background-size:cover; background-position:center"></div></td>
+            <td class="align-middle">{{item.plate_number}}</td>
+            <td class="align-middle"><div class="rounded-2" style="width:70px; height:70px; background-image:url('../user/photos/{{item.photo}}'); background-size:cover; background-position:center"></div></td>
+            <td class="align-middle">{{item.user_id}}</td>
+            <td class="align-middle">{{item.name}}</td>
+            <td class="align-middle">{{item.email}}</td>
+            <td class="align-middle">{{item.rental_start_date}}</td>
+            <td class="align-middle">{{item.rental_end_date}}</td>
+            <td class="align-middle">{{item.total_days}}</td>
+            <td class="align-middle">{{item.daily_price}}</td>
+            <td class="align-middle">{{item.total_amount}}</td>
+            <td class="align-middle">{{item.rental_status}}</td>
+            <td class="align-middle">
+                <a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
+                <a href="rental-update.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                <a type="button" 
+                    class="border-0 row-delete" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#confirmation-modal"
+                    data-id="{{item.rental_id}}"
+                    data-plate_number="{{item.plate_number}}"
+                    data-start_date="{{item.rental_start_date}}"
+                    data-end_date="{{item.rental_end_date}}"
+                    data-amount="{{item.total_amount}}"
+                    data-name="{{item.name}}"
+                    data-rental_status="{{item.rental_status}}">
+                    <i class="bi bi-x-square text-danger"></i></a>
+            </td>
+          </tr>
+          {% set i = i + 1 %}
+          {% endfor %}
+        </tbody>
+      </table>
+</div>
+<!--Confirmation Modal -->
+<div class="modal fade" id="confirmation-modal" tabindex="-1" aria-labelledby="confirmation-modal" aria-hidden="true">
+  <div class="modal-dialog">
+  <div class="modal-content">
+      <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="post">
+         <div class="modal-body">
+              <div>You are trying to delete a following record</div>
+              <div id="row-data"></div>
+          </div>
+      <div class="modal-footer">
+      <input type="hidden" name="rental-id" id="txt-confirm">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+      </div>
+      
+  </form>
+  </div>
+  </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){
+      $( ".row-delete" ).each(function( index ) {
+          $(this).on("click",function(){
+              $("#row-data").html(
+                `<div class="col col-12">
+                          <p><strong>Rental ID</strong>: ${$(this).data("id")}</p>
+                          <p><strong>Car Plate No</strong>: ${$(this).data("plate_number")}</p>
+                          <p><strong>Rental Start</strong>: ${$(this).data("start_date")}</p>
+                          <p><strong>Rental End</strong>: ${$(this).data("end_date")}</p>
+                          <p><strong>Total Amount</strong>: ${$(this).data("amount")}</p>
+                          <p><strong>User Name</strong>: ${$(this).data("name")}</p>
+                          <p><strong>Current Status</strong>: ${$(this).data("rental_status")}</p>
+                      </div>  
+                    </div>`
+              );
+              $("#txt-confirm").val($(this).data("id"));
+          })
+      });
+  });
+</script>
+{% endblock %}

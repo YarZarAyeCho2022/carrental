@@ -1,0 +1,148 @@
+
+{% extends "base.html" %}
+
+
+{% block title %}Index{% endblock %}
+{% block head %}
+    {{parent()}}
+{% endblock %}    
+{% block content %}
+<div class="wrapper p-5 flex-fill">
+    <h2>Create Maintenance Record</h2>
+    {% if success_message is not empty %}
+    <div class="bg-success text-white rounded-1 my-2 p-1">{{success_message}}</div>
+    {% endif %}
+    <form method="post" enctype = "multipart/form-data">
+        <div class="mb-3">
+            <label for="car" class="form-label">Car</label>
+            <select class="form-select" required name="car-id" id="select-car">
+                <option>Select car</option>
+                {% for item in car_list %}
+                <option value="{{item.car_id}}" {% if item.car_id == car_id %} selected {% endif %}>{{item.brand}} - {{item.model}} [{{item.plate_number}}]</option>
+                {% endfor %}
+            </select>
+            {% if car_list_err is not empty %}
+           <span class="small text-warning">{{car_list_err}}</span>
+           {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="car" class="form-label">User</label>
+            <select class="form-select" required name="user-id">
+                <option>Select user</option>
+                {% for item in user_list %}
+                <option value="{{item.user_id}}" {% if item.user_id == user_id %} selected {% endif %}>{{item.name}} - {{item.email}}</option>
+                {% endfor %}
+            </select>
+            {% if user_list_err is not empty %}
+           <span class="small text-warning">{{user_list_err}}</span>
+           {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="rental-start-date" class="col-form-label">Rental start date</label>
+            <div class="input-group date" id="start-datepicker">
+                <input type="text" class="form-control" id="rental-start-date" name="rental-start-date" value="{{rental_start_date}}"/>
+                <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
+            </div>
+            {% if rental_start_date_err is not empty %}
+                <span class="small text-warning">{{rental_start_date_err}}</span>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="rental-end-date" class="col-form-label">Rental end date</label>
+            <div class="input-group date" id="end-datepicker">
+                <input type="text" class="form-control" id="rental-end-date" name="rental-end-date" value="{{rental_end_date}}"/>
+                <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
+            </div>
+            {% if end_date_err is not empty %}
+                <span class="small text-warning">{{rental_end_date_err}}</span>
+            {% endif %}
+        </div>
+        <div class="mb-3">
+            <label for="total-day" class="form-label">Total Day(s)</label>
+            <input type="number" min="0" title="number" class="form-control" id="total-day" name="total-day" value="{{total-day}}" required disabled>
+        </div>
+        <div class="mb-3">
+            <label for="daily-price" class="form-label">Daily Price</label>
+            <input type="number" min="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="daily-price" name="cost" value="{{daily-price}}" required disabled>
+        </div>
+        <div class="mb-3">
+            <label for="total-amount" class="form-label">Total Amount</label>
+            <input type="number" min="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="total-amount" name="cost" value="{{total-amount}}" required disabled>
+        </div>
+
+        <button type="submit" class="btn btn-info text-white" name="create-maintenance">Create</button>
+    </form>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        // Date Picker
+        $('#start-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#end-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+        // Ajax
+        $("#select-car").change(function(){
+            $.ajax({
+            url: 'ajax-check-car.php',
+            type: 'POST',
+            data: jQuery.param({ "car_id": $(this).val(), "car_change":true}) ,
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            
+            success: function (response) {
+                console.log(response);
+                $("#daily-price").val(parseFloat(response));
+                $("#car-output").html(response);
+                calcAmount();
+            },
+            error: function () {
+                alert("error");
+                }
+            }); 
+        });
+        
+        function calcDays(startDate,endDate){
+            var date1=new Date(startDate)
+            var date2=new Date(endDate)
+            console.log(date1.getTime());
+            console.log(date2.getTime());
+            var milli_secs = date2.getTime() - date1.getTime();
+            console.log(milli_secs);
+            var days = milli_secs / (1000 * 3600 *24);
+            return days+1;
+        }
+        // Calculate day
+        $("#rental-start-date").change(function(){
+            if(! $("#rental-end-date").val()==''){
+                var startDate = $("#rental-start-date").val();
+                var endDate = $("#rental-end-date").val();
+                $("#total-day").val(calcDays(startDate,endDate));
+                calcAmount();
+            }
+        })
+        $("#rental-end-date").change(function(){
+            if(! $("#rental-start-date").val()==''){
+                var startDate = $("#rental-start-date").val();
+                var endDate = $("#rental-end-date").val();
+                $("#total-day").val(calcDays(startDate,endDate));
+                calcAmount();
+            }
+        })
+
+        function calcAmount(){
+            if((! $("#daily-price").val()=='')&(! $("#total-day").val()=='')){
+                var totalAmount = $("#daily-price").val() * $("#total-day").val();
+                $("#total-amount").val(totalAmount.toFixed(2));
+                return totalAmount;
+            }
+        }
+
+    });
+</script>
+  {% endblock %}
