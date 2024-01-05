@@ -9,10 +9,11 @@ $twig = new \Twig\Environment($loader);
 $twig->addGlobal('session', $_SESSION);
 
 $success_message="";
-$car_list_err = $start_date_err= $end_date_err="";
+$start_date_err= $end_date_err="";
 $car_id= $description = $start_date = $end_date = $cost= "";
 $car_list=[];
 $user_list=[];
+$user_err= $car_err="";
 $register_err=true;
 
 $sql = "SELECT car_id, brand, model, plate_number FROM car";
@@ -27,50 +28,46 @@ while ($row = mysqli_fetch_assoc($query)) {
     $user_list[] = $row;
 }
 
-if (isset($_POST['create-maintenance'])){
+if (isset($_POST['create-rental'])){
    
     $car_id= $_POST['car-id'];
-    $description = $_POST['description'];
-    $start_date = $_POST['start-date'];
-    $end_date = $_POST['end-date'];
-    $cost = $_POST['cost'];
-
-    $sql = "SELECT car_id FROM car WHERE car_id=".$car_id;
-    $query = $link->query($sql);
-    if (mysqli_num_rows($query)==0){
-        $car_list_err = "Please select correct Car.";
-        $register_err = false;
-    }
-
-    $sql = "SELECT rental_id FROM rental WHERE car_id=".$car_id. " AND ('".$start_date. "' BETWEEN rental_start_date AND rental_end_date) AND request_status<>'R'";
-    $query =$link->query($sql);
-    if (mysqli_num_rows($query)>0){
-        $register_err = false;
-        $start_date_err = "The date conflict with the rental period. Please select the diffrent date.";
-    }
-
-    $sql = "SELECT rental_id FROM rental WHERE car_id=".$car_id. " AND ('".$end_date. "' BETWEEN rental_start_date AND rental_end_date) AND request_status<>'R'";
-    $query =$link->query($sql);
-    if (mysqli_num_rows($query)>0){
-        $register_err = false;
-        $end_date_err = "The date conflict with the rental period. Please select the diffrent date.";
-    }
-
+    $user_id= $_POST['user-id'];
+    $rental_start_date = $_POST['rental-start-date'];
+    $rental_end_date = $_POST['rental-end-date'];
+    $daily_price = $_POST['daily-price'];
+    $total_amount = $_POST['total-amount'];
     
+    $sql="SELECT user_id FROM user WHERE user_id =".$user_id;
+    $query = $link->query($sql);
+    if(mysqli_num_rows($query)==0){
+        $register_err=false;
+        $user_err = "Username not found.";
+    }
+
+    $sql="SELECT car_id FROM car WHERE car_id =".$car_id;
+    $query = $link->query($sql);
+    if(mysqli_num_rows($query)==0){
+        $register_err=false;
+        $car_err = "Car not found.";
+    }
+
     if ($register_err){
-        
-        $sql = "INSERT INTO carmaintenance (car_id, description, start_date,end_date,cost,created_date)VALUES("
+        $sql = "INSERT INTO rental (user_id,car_id,rental_start_date, rental_end_date,rental_price, amount, request_status, request_date)VALUES("
+            .$user_id.","
             .$car_id.","
-            ."'".$description."',"
-            ."'". $start_date."',"
-            ."'".$end_date."',"
-            ."".$cost.","
-            ."'" .date('Y-m-d H:i:s')."'"
+            ."'". $rental_start_date."',"
+            ."'". $rental_end_date."',"
+            .$daily_price.","
+            .$total_amount.","
+            ."'P',"
+            ."'".date('Y-m-d H:i:s')."'"
             .")";
+
+        echo $sql;
         $results = $link->query($sql);
         $link->close();
-        $car_id= $description = $start_date = $end_date = $cost= "";
-        $success_message = 'Mantenance record has been created';
+        
+        $success_message = 'Rental record has been created';
     }
     else{
 
@@ -82,14 +79,6 @@ if (isset($_POST['create-maintenance'])){
 
 echo $twig->render('rental-create.html',array(
     "success_message" => $success_message,
-    "car_list_err" => $car_list_err,
     "car_list"=>$car_list,
     "user_list"=>$user_list,
-    "start_date_err"=> $start_date_err,
-    "end_date_err" => $end_date_err,
-    "car_id" => $car_id,
-    "description"=>$description,
-    "start_date"=> $start_date,
-    "end_date"=>$end_date,
-    "cost"=>$cost,
 ));

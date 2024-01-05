@@ -23,7 +23,7 @@ if (isset($_GET['id'])){
             `car`.`color`,
             CASE
                 WHEN current_repair.car_id IS NOT NULL THEN "Repair"
-                WHEN car_rental.request_status ="P" THEN "Pending"
+                WHEN car_rental.request_status ="P" THEN "Request pending"
                 WHEN car_rental.request_status = "C" THEN "Approved"
                 ELSE "Available"
             END AS "Status",
@@ -36,7 +36,7 @@ if (isset($_GET['id'])){
             WHERE `car`.`car_id`='.$car_id ;
 
     $query = $link->query($sql);
-    echo mysqli_num_rows($query);
+    
     while ($row = mysqli_fetch_assoc($query)) {
         $results[] = $row;
     }
@@ -51,6 +51,12 @@ if (isset($_GET['id'])){
                 user.email,
                 user.contact_number,
                 rental.rental_price,
+                CASE
+                WHEN rental.request_status="C" THEN "Approved"
+                WHEN rental.request_status="P" THEN "Pending"
+                WHEN rental.request_status="Rjd" THEN "Rejected"
+                WHEN rental.request_status="Rtn" THEN "Returned"
+                END as request_status,
                 rental.amount
             FROM 
 	            car INNER JOIN rental ON car.car_id = rental.car_id
@@ -62,14 +68,14 @@ if (isset($_GET['id'])){
         $rental_detail[] = $row;
     }
 
-    $sql = 'SELECT 
-                SUM(IFNULL(rental.amount,0)) AS Profit,
+    $sql = "SELECT 
+                SUM(IFNULL(actual_rental.amount,0)) AS Profit,
                 SUM(IFNULL(carmaintenance.cost,0)) + car.purchase_price AS Loss,
-                SUM(IFNULL(rental.amount,0))-(SUM(IFNULL(carmaintenance.cost,0))+car.purchase_price) AS PNL
+                SUM(IFNULL(actual_rental.amount,0))-(SUM(IFNULL(carmaintenance.cost,0))+car.purchase_price) AS PNL
             FROM 
-                car LEFT JOIN rental ON car.car_id=rental.car_id
+                car LEFT JOIN (SELECT car_id,amount FROM rental WHERE request_status NOT IN ('Rjd','P'))actual_rental ON car.car_id=actual_rental.car_id
                 LEFT JOIN carmaintenance ON car.car_id=carmaintenance.car_id
-                WHERE car.car_id='.$car_id;
+                WHERE car.car_id=".$car_id;
     $query = $link->query($sql);
     while ($row = mysqli_fetch_assoc($query)) {
         $pnl[] = $row;

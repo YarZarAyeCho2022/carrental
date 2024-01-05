@@ -93,6 +93,7 @@
                       <th scope="col"  class="bg-info text-white">Email</th>
                       <th scope="col"  class="bg-info text-white">Rental Rate</th>
                       <th scope="col"  class="bg-info text-white">Amount</th>
+                      <th scope="col"  class="bg-info text-white">Request Status</th>
                       <th scope="col"  class="bg-info text-white">Action</th>
                     </tr>
                   </thead>
@@ -101,10 +102,11 @@
                     <td class="align-middle">{{item.rental_id}}</td>
                     <td class="align-middle">{{item.rental_start_date}}</td>
                     <td class="align-middle">{{item.rental_end_date}}</td>
-                    <td class="align-middle">{{item.name}}<a href="../user/user-view.php?id={{item.user_id}}" target="_blank"><i class="bi bi-arrow-up-right-square text-success ms-2"></i></a></td>
+                    <td class="align-middle">{{item.name}}<a href="user-view.php?id={{item.user_id}}" target="_blank"><i class="bi bi-arrow-up-right-square text-success ms-2"></i></a></td>
                     <td class="align-middle">{{item.email}}</td>
                     <td class="align-middle">{{item.rental_price|number_format(2, '.', ',') }}</td>
                     <td class="align-middle">{{item.amount|number_format(2, '.', ',') }}</td>
+                    <td class="align-middle">{{item.request_status}}</td>
                     <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
                         <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
                         <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>

@@ -21,8 +21,8 @@
                 <option value="{{item.car_id}}" {% if item.car_id == car_id %} selected {% endif %}>{{item.brand}} - {{item.model}} [{{item.plate_number}}]</option>
                 {% endfor %}
             </select>
-            {% if car_list_err is not empty %}
-           <span class="small text-warning">{{car_list_err}}</span>
+            {% if car_err is not empty %}
+           <span class="small text-warning">{{car_err}}</span>
            {% endif %}
         </div>
         <div class="mb-3">
@@ -33,14 +33,14 @@
                 <option value="{{item.user_id}}" {% if item.user_id == user_id %} selected {% endif %}>{{item.name}} - {{item.email}}</option>
                 {% endfor %}
             </select>
-            {% if user_list_err is not empty %}
-           <span class="small text-warning">{{user_list_err}}</span>
+            {% if user_err is not empty %}
+           <span class="small text-warning">{{user_err}}</span>
            {% endif %}
         </div>
         <div class="mb-3">
             <label for="rental-start-date" class="col-form-label">Rental start date</label>
             <div class="input-group date" id="start-datepicker">
-                <input type="text" class="form-control" id="rental-start-date" name="rental-start-date" value="{{rental_start_date}}"/>
+                <input type="text" class="form-control" id="rental-start-date" name="rental-start-date" value="{{rental_start_date}}" required/>
                 <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
             </div>
                 <span class="small text-warning" id="rental-start-date-err"></span>
@@ -48,25 +48,28 @@
         <div class="mb-3">
             <label for="rental-end-date" class="col-form-label">Rental end date</label>
             <div class="input-group date" id="end-datepicker">
-                <input type="text" class="form-control" id="rental-end-date" name="rental-end-date" value="{{rental_end_date}}"/>
+                <input type="text" class="form-control" id="rental-end-date" name="rental-end-date" value="{{rental_end_date}}" required/>
                 <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
             </div>
             <span class="small text-warning" id="rental-end-date-err"></span>
         </div>
         <div class="mb-3">
             <label for="total-day" class="form-label">Total Day(s)</label>
-            <input type="number" min="0" title="number" class="form-control" id="total-day" name="total-day" value="{{total-day}}" required disabled>
+            <div class="rounded-1 " style="border:1px #ddd solid; background-color:#eee; padding:5px 15px" id="total-day">0</div>
+            
         </div>
         <div class="mb-3">
-            <label for="daily-price" class="form-label">Daily Price</label>
-            <input type="number" min="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="daily-price" name="cost" value="{{daily-price}}" required disabled>
+            <label for="pricing" class="form-label">Daily Price</label>
+            <div class="rounded-1 " style="border:1px #ddd solid; background-color:#eee; padding:5px 15px" id="display-daily-price">0</div>
+            <input type="hidden" class="form-control" id="daily-price" name="daily-price" value="" required>
         </div>
         <div class="mb-3">
             <label for="total-amount" class="form-label">Total Amount</label>
-            <input type="number" min="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="total-amount" name="cost" value="{{total-amount}}" required disabled>
+            <div class="rounded-1 " style="border:1px #ddd solid; background-color:#eee; padding:5px 15px" id="display-total-amount">0</div>
+            <input type="hidden" class="form-control" id="total-amount" name="total-amount" value="{{total-amount}}" required>
         </div>
 
-        <button type="submit" class="btn btn-info text-white" name="create-maintenance">Create</button>
+        <button type="submit" class="btn btn-info text-white" name="create-rental">Create</button>
     </form>
 </div>
 
@@ -83,71 +86,107 @@
             format: 'yyyy-mm-dd'
         });
 
+        $("#rental-start-date").prop('disabled',true);
+        $("#rental-end-date").prop('disabled',true);
+        $("#rental-start-date").attr('placeholder',"Select the car first.");
+        $("#rental-end-date").attr('placeholder',"Select the car first.");
+
         // Ajax
         $("#rental-start-date").change(function(){
+            if(! $("#rental-end-date").val()==''){
+                var startDate = $("#rental-start-date").val();
+                var endDate = $("#rental-end-date").val();
+                $("#total-day").html(calcDays(startDate,endDate));
+                calcAmount();
+            };
+
+            jsonOBJ = {
+                'car_id' : $("#select-car").val(),
+                'rental_start_date': $(this).val(),
+            }
             $.ajax({
-            url: 'ajax-check-date.php',
-            type: 'POST',
-            data: jQuery.param({ "car_id":$("#select-car").val(), "calendar-start-check":true, "rental-start-date":$(this).val()}) ,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            
-            success: function (response) {
-                if(response == false ){
-                    $("#rental-start-date-err").html("The date is already occupied.");
-                    $("#rental-start-date").val('');
+                url: 'ajax-check-date.php',
+                type: 'POST',
+                data: {rentalstartdate: jsonOBJ},
+                dataType:'json',
+                success: function(response){
+                    if(response['valid']==false){
+                        $("#rental-start-date-err").html(response['err_msg']);
+                        $("#rental-start-date").val('');
+                    }
+                    else{
+                        $("#rental-start-date-err").html(response['err_msg']);
+                    }
+                },
+                error: function(response){
+                    console.log(response);
                 }
-                else {
-                    $("#rental-start-date-err").html('');
-                }
-            },
-            error: function () {
-                alert("error");
-                }
-            }); 
+            }) 
         }); //start date check 
 
         $("#rental-end-date").change(function(){
+            if(! $("#rental-start-date").val()==''){
+                var startDate = $("#rental-start-date").val();
+                var endDate = $("#rental-end-date").val();
+                $("#total-day").html(calcDays(startDate,endDate));
+                calcAmount();
+            }
+            jsonOBJ = {
+                'car_id' : $("#select-car").val(),
+                "rental_end_date": $(this).val(),
+            }
             $.ajax({
-            url: 'ajax-check-date.php',
-            type: 'POST',
-            data: jQuery.param({ "car_id":$("#select-car").val(), "calendar-end-check":true, "rental-end-date":$(this).val()}) ,
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            
-            success: function (response) {
-                
-                if(response == false ){
-                    $("#rental-end-date-err").html("The date is already occupied.");
-                    $("#rental-end-date").val('');
-                }
-                else {
+                url: 'ajax-check-date.php',
+                type: 'POST',
+                data: {rentalenddate: jsonOBJ},
+                dataType:'json',
+                success: function(response){
+                    if(response['valid']==false){
+                        $("#rental-end-date-err").html(response['err_msg']);
+                        $("#rental-end-date").val('');
+                    }
+                    else {
+                        $("#rental-end-date-err").html(response['err_msg']);
+                    }
+                },
+                error: function(response){
                     console.log(response);
-                    $("#rental-end-date-err").html('');
                 }
-            },
-            error: function () {
-                alert("error");
-                }
-            }); 
-        }); //start date check 
+            })
+        });
 
         $("#select-car").change(function(){
+            if($(this).val()>0){
+                $("#rental-start-date").prop('disabled',false);
+                $("#rental-end-date").prop('disabled',false); 
+                $("#rental-start-date").attr('placeholder',"");
+                $("#rental-end-date").attr('placeholder',"");
+
+            }
+            else {
+                $("#rental-start-date").prop('disabled',true);
+                $("#rental-end-date").prop('disabled',true);
+                $("#rental-start-date").attr('placeholder',"Select the car first.");
+                $("#rental-end-date").attr('placeholder',"Select the car first.");
+            }
+            jsonOBJ = {
+                'car_id': $(this).val(),
+            }
             $.ajax({
-            url: 'ajax-check-car.php',
-            type: 'POST',
-            data: jQuery.param({ "car_id": $(this).val(), "car_change":true}),
-            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-            
-            success: function (response) {
-                $("#daily-price").val(parseFloat(response));
-                $("#car-output").html(response);
-                calcAmount();
-            },
-            error: function () {
-                alert("error");
+                url:'ajax-check-car.php',
+                type:'POST',
+                data:{cardetail: jsonOBJ},
+                dataType: "json",
+                success: function(response){
+                    $("#daily-price").attr("value",parseFloat(response[0]['rental_price']));
+                    $("#display-daily-price").html(parseFloat(response[0]['rental_price']));
+                    calcAmount();
+                },
+                error: function (response){
+                    console.log(response);
                 }
-            }); 
-            
-        });
+            });
+        })
         
         function calcDays(startDate,endDate){
             var date1=new Date(startDate)
@@ -156,29 +195,15 @@
             var days = milli_secs / (1000 * 3600 *24);
             return days+1;
         }
-        // Calculate day
-        $("#rental-start-date").change(function(){
-            if(! $("#rental-end-date").val()==''){
-                var startDate = $("#rental-start-date").val();
-                var endDate = $("#rental-end-date").val();
-                $("#total-day").val(calcDays(startDate,endDate));
-                calcAmount();
-            }
-        })
-        $("#rental-end-date").change(function(){
-            if(! $("#rental-start-date").val()==''){
-                var startDate = $("#rental-start-date").val();
-                var endDate = $("#rental-end-date").val();
-                $("#total-day").val(calcDays(startDate,endDate));
-                calcAmount();
-            }
-        })
 
         function calcAmount(){
-            if((! $("#daily-price").val()=='')&(! $("#total-day").val()=='')){
-                var totalAmount = $("#daily-price").val() * $("#total-day").val();
-                $("#total-amount").val(totalAmount.toFixed(2));
-                return totalAmount;
+            
+            if((! $("#daily-price").val()=='')&(! $("#total-day").html()=='')){
+                var totalAmount = $("#daily-price").val() * $("#total-day").html();
+                $("#total-amount").attr("value",totalAmount.toFixed(2));
+                $("#display-total-amount").html(totalAmount.toFixed(2));
+                // console.log(totalAmount);
+                // return totalAmount;
             }
         }
 
