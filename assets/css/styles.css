@@ -1,0 +1,458 @@
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap');
+
+
+:root {
+    --primary-color: #fc0;
+    --blue-gradient: linear-gradient(45deg, #4099ff, #73b4ff);
+    --green-gradient: linear-gradient(45deg, #2ed8b6, #59e0c5);
+    --yellow-gradient: linear-gradient(45deg, #FFB64D, #ffcb80);
+    --pink-gradient: linear-gradient(45deg, #FF5370, #ff869a);
+}
+
+.cr-bg-primary {
+    background-color: var(--primary-color);
+}
+
+body {
+    font-family: 'Red Hat Display', sans-serif;
+}
+
+form input,
+form select,
+form .input-group-text {
+    border-radius: 0px !important;
+}
+
+
+/*Modal*/
+
+.modal-content {
+    border-radius: 0px;
+}
+
+.modal-header {
+    border-bottom: 2px solid var(--primary-color);
+    border-radius: 0px;
+}
+
+.modal-footer {
+    background-color: var(--primary-color);
+    border-radius: 0px;
+}
+
+nav li a {
+    text-decoration: none;
+    color: #000;
+    display: block;
+    position: relative;
+}
+
+nav li a::after {
+    content: "";
+    width: 100%;
+    height: 2px;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    background-color: var(--primary-color);
+    opacity: 0;
+    transition: 0.3s;
+}
+
+nav li a:hover::after {
+    opacity: 1;
+}
+
+nav .site-logo {
+    display: inline-block;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.8rem;
+    text-decoration: none;
+    color: #999;
+    position: relative;
+    transform: skew(-15deg);
+    padding-left: 2rem;
+}
+
+.site-logo::before {
+    content: "U";
+    font-size: 3rem;
+    color: #000;
+    position: absolute;
+    left: 0px;
+    top: -1rem;
+}
+
+.site-logo::after {
+    content: "";
+    left: 2rem;
+    right: 0px;
+    bottom: 6px;
+    height: 3px;
+    background-color: var(--primary-color);
+    position: absolute;
+}
+
+.header-bar {
+    border-bottom: 3px solid #fc0;
+}
+
+.main-wrapper {
+    background-color: #edf2f9;
+}
+
+.my-cards {
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+    padding: 10px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.my-cards .my-card-heading {
+    font-weight: 600;
+    color: #fff;
+    align-self: flex-start;
+}
+
+.my-cards .my-card-digit {
+    font-size: 3rem;
+    color: #fff;
+    align-self: flex-start;
+}
+
+.my-cards .my-card-btn {
+    color: #eee;
+    display: inline-block;
+    align-self: flex-end;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+
+.my-cards .my-card-item {
+    display: flex;
+    background-color: #fdfdfd;
+    align-items: flex-end;
+    text-decoration: none;
+    cursor: pointer;
+    padding-left: 10px;
+    padding-right: 10px;
+    transition: 0.3s;
+}
+
+.my-cards a i {
+    display: inline-block;
+    transform: translateX(0);
+    transition: 0.3s;
+}
+
+.my-cards a:hover i {
+    transform: translateX(5px);
+    transition: 0.3s;
+}
+
+.my-cards .my-card-item:hover {
+    background-color: #eee;
+
+}
+
+.bg-c-blue {
+    background: linear-gradient(45deg, #4099ff, #73b4ff);
+}
+
+.bg-c-green {
+    background: linear-gradient(45deg, #2ed8b6, #59e0c5);
+}
+
+.bg-c-yellow {
+    background: linear-gradient(45deg, #FFB64D, #ffcb80);
+}
+
+.bg-c-pink {
+    background: linear-gradient(45deg, #FF5370, #ff869a);
+}
+
+.bg-s-blue {
+    background-color: #4099ff !important;
+}
+
+
+
+.data-table thead th {
+    background-color: #4099ff !important;
+}
+
+.cr-btn-primary {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    background: var(--primary-color);
+    color: #000;
+    padding: 5px 30px 5px 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    border: none;
+}
+
+.cr-btn-secondary {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    background: #000;
+    color: var(--primary-color);
+    padding: 6px 30px 6px 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    border: none;
+}
+
+.cr-btn-primary-outline {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    background: none;
+    color: #000;
+    padding: 5px 30px 5px 15px;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.3);
+    border: 1px solid #000;
+}
+
+.cr-btn-add {
+    position: relative;
+}
+
+.cr-btn-add::after {
+    content: "\F4FD";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-add:hover::after {
+    right: 5px;
+}
+
+.cr-btn-create {
+    position: relative;
+}
+
+.cr-btn-create::after {
+    content: "\F1BE";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-create:hover::after {
+    right: 5px;
+}
+
+.cr-btn-update {
+    position: relative;
+}
+
+.cr-btn-update::after {
+    content: "\F603";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-update:hover::after {
+    right: 5px;
+}
+
+.cr-btn-view {
+    position: relative;
+}
+
+.cr-btn-view::after {
+    content: "\F341";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-view:hover::after {
+    right: 5px;
+}
+
+.cr-btn-list {
+    position: relative;
+}
+
+.cr-btn-list::after {
+    content: "\F477";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-list:hover::after {
+    right: 5px;
+}
+
+.cr-btn-back {
+    position: relative;
+}
+
+.cr-btn-back::after {
+    content: "\F10F";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-back:hover::after {
+    right: 5px;
+}
+
+.cr-btn-edit {
+    position: relative;
+}
+
+.cr-btn-edit::after {
+    content: "\F4CA";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-edit:hover::after {
+    right: 5px;
+}
+
+.cr-btn-login {
+    position: relative;
+}
+
+.cr-btn-login::after {
+    content: "\F44F";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-login:hover::after {
+    right: 5px;
+}
+
+
+.cr-btn-exit {
+    position: relative;
+}
+
+.cr-btn-exit::after {
+    content: "\F308";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-exit:hover::after {
+    right: 5px;
+}
+
+.cr-btn-close {
+    position: relative;
+}
+
+.cr-btn-close::after {
+    content: "\F629";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-close:hover::after {
+    right: 5px;
+}
+
+
+.cr-btn-dashboard {
+    position: relative;
+}
+
+.cr-btn-dashboard::after {
+    content: "\F461";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-dashboard:hover::after {
+    right: 5px;
+}
+
+.cr-btn-search {
+    position: relative;
+}
+
+.cr-btn-search::after {
+    content: "\F52A";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-search:hover::after {
+    right: 5px;
+}
+
+/*Hero Section*/
+.hero-wrapper {
+    height: 70vh;
+    background: url('../images/211762.jpg');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.slogan1 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 4rem;
+    display: inline-block;
+    background-color: #000;
+    color: #fff;
+    padding: 0.1rem 2rem;
+    transform: skew(-15deg);
+
+}
+
+.slogan2 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 4rem;
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: #000;
+    padding: 0.1rem 2rem;
+    transform: skew(-15deg);
+
+}

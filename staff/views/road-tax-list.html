@@ -9,25 +9,23 @@
 {% block content %}
 <div class="wrapper p-5 flex-fill main-wrapper">
     <div class="d-flex justify-content-between align-items-center">
-    <h2>Maintenance List</h2>
-    <a class="cr-btn-primary cr-btn-add" href="maintenance-create.php">Add new</a>
+    <h2>Road Tax List</h2>
+    <a class="cr-btn-primary cr-btn-add" href="road-tax-create.php">Add new</a>
     </div>
     {% if action_message is not empty %}
     <div class="bg-success text-white rounded-1 my-2 p-1">{{action_message}}</div>
     {% endif %}
-    <table class="table table-striped data-table"  id="maintenance-list">
+    <table class="table table-striped data-table" id="maintenance-list">
         <thead>
           <tr>
-            <th scope="col"  class="text-white">#</th>
-            <th scope="col"  class="text-white">Image</th>
-            <th scope="col"  class="text-white">Plate Number</th>
-            <th scope="col"  class="text-white">Model</th>
-            <th scope="col"  class="text-white">Brand</th>
-            <th scope="col"  class="text-white">Maintenance Description</th>
-            <th scope="col"  class="text-white">Start Date</th>
-            <th scope="col"  class="text-white">End Date</th>
-            <th scope="col"  class="text-white">Cost</th>
-            <th scope="col"  class="text-white">Action</th>
+            <th scope="col"  class="bg-info text-white">#</th>
+            <th scope="col"  class="bg-info text-white">Image</th>
+            <th scope="col"  class="bg-info text-white">Plate Number</th>
+            <th scope="col"  class="bg-info text-white">Model</th>
+            <th scope="col"  class="bg-info text-white">Brand</th>
+            <th scope="col"  class="bg-info text-white">Tax Amount</th>
+            <th scope="col"  class="bg-info text-white">Payment Date</th>
+            <th scope="col"  class="bg-info text-white">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -39,26 +37,22 @@
             <td class="align-middle">{{item.plate_number}}</td>
             <td class="align-middle">{{item.model}}</td>
             <td class="align-middle">{{item.brand}}</td>
-            <td class="align-middle">{{item.description}}</td>
-            <td class="align-middle">{{item.start_date}}</td>
-            <td class="align-middle">{{item.end_date}}</td>
-            <td class="align-middle">{{item.cost|number_format(2, '.', ',') }}</td>
+            <td class="align-middle">{{item.amount|number_format(2, '.', ',') }}</td>
+            <td class="align-middle">{{item.payment_date}}</td>
             <td class="align-middle">
-                
-                <a href="maintenance-update.php?id={{item.maintenance_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
+                <a href="road-tax-update.php?id={{item.road_tax_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
                 <!-- <a href=""><i class="bi bi-x-square text-danger row-delete"></i></a> -->
                 <a type="button" 
                     class="border-0 row-delete" 
                     data-bs-toggle="modal" 
                     data-bs-target="#confirmation-modal"
-                    data-id="{{item.maintenance_id}}"
-                    data-plate_number="{{item.plate_number}}"
+                    data-id="{{item.road_tax_id}}"
+                    data-plate-number="{{item.plate_number}}"
                     data-model="{{item.model}}"
                     data-brand="{{item.brand}}"
-                    data-description="{{item.description}}"
-                    data-start_date="{{item.start_date}}"
-                    data-end_date="{{item.end_date}}"
-                    data-cost="{{item.cost}}">
+                    data-tax-amount="{{item.amount}}"
+                    data-payment-date="{{item.payment_date}}"
+                    >
                     <i class="bi bi-x-square text-danger"></i></a>
             </td>
           </tr>
@@ -81,9 +75,9 @@
                 <div id="row-data"></div>
             </div>
         <div class="modal-footer">
-        <input type="hidden" name="maintenance-id" id="txt-confirm">
+        <input type="hidden" name="road-tax-id" id="txt-confirm">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+        <button type="submit" class="btn bg-c-pink text-white" name="delete">Delete</button>
         </div>
         
     </form>
@@ -100,13 +94,11 @@
                 $(this).on("click",function(){
                     $("#row-data").html(
                         `<ul>
-                            <li>Plate number: ${$(this).data("plate_number")}</li>
+                            <li>Plate number: ${$(this).data("plate-number")}</li>
                             <li>Model: ${$(this).data("model")}</li>
                             <li>Brand: ${$(this).data("brand")}</li>
-                            <li>Description: ${$(this).data("description")}</li>
-                            <li>Start Date: ${$(this).data("start_date")}</li>
-                            <li>End Date: ${$(this).data("end_date")}</li>
-                            <li>Cost: ${$(this).data("cost")}</li>
+                            <li>Tax Amount: ${$(this).data("tax-amount")}</li>
+                            <li>Payment Date: ${$(this).data("payment-date")}</li>
                         </ul>`
                     );
                     $("#txt-confirm").val($(this).data("id"));

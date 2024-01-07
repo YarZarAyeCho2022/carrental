@@ -7,16 +7,16 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="wrapper p-5 flex-fill">
+<div class="wrapper p-5 flex-fill main-wrapper">
     
     {% for item in queryResult %}
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
-            <h2>{{item.brand}} {{item.model}}</h2><div class=" text-white py-2 bg-dark px-3 rounded-1 ms-3">{{item.plate_number}}</div>
+            <h2>{{item.brand}} {{item.model}}</h2><div class=" text-white py-2 bg-c-pink px-3 rounded-1 ms-3">{{item.plate_number}}</div>
         </div>
         <div>
-            <a href="car-list.php" class="py-2 px-3 btn btn-outline-info"><i class="bi bi-arrow-90deg-left me-2"></i>Go back</a>
-            <a href="car-update.php?id={{item.car_id}}" class="py-2 px-3 btn btn-info text-white"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+            <a href="car-list.php" class="cr-btn-primary-outline cr-btn-back">Go back</a>
+            <a href="car-update.php?id={{item.car_id}}" class="cr-btn-primary cr-btn-edit">Edit</a>
         </div>
         
     </div>
@@ -53,23 +53,23 @@
             {% for item in pnl %}
             <div class="row">
                 <div class="col col-12">
-                    <div class="rounded-2 p-3 shadow-sm text-center" style="border:1px solid {% if item.PNL >= 0 %} #008800 {% else %} #ff0000 {% endif %}; border-left-width:10px; border-left-style: solid;">
-                            <h4 style="font-weight:400; text-transform: uppercase; color:#999;">Profit and Loss</h4>
-                            <div style="font-weight:600; font-size:2rem">{{item.PNL|number_format(2, '.', ',')}}</div>
+                    <div class="my-cards text-center bg-c-blue">
+                            <div class="my-card-heading">Profit and Loss</div>
+                            <div class="my-card-digit">{{item.PNL|number_format(2, '.', ',')}}</div>
                     </div>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col col-6">
-                    <div class="rounded-2 shadow-sm text-center" style="border:1px solid #008800; border-left:10px solid #008800">
-                        <h4 style="font-size:0.9rem; text-transform: uppercase;color:#999;" class="pt-2">Income</h4>
-                        <div style="font-weight:600; font-size:1.8rem">{{item.Profit|number_format(2, '.', ',')}}</div>
+                    <div class="my-cards bg-c-green">
+                        <div class="my-card-heading">Income</div>
+                        <div class="my-card-digit">{{item.Profit|number_format(2, '.', ',')}}</div>
                     </div>
                 </div>
                 <div class="col col-6">
-                    <div class="rounded-2 shadow-sm text-center" style="border:1px solid #ff0000; border-left:10px solid #ff0000">
-                        <h4 style="font-size:0.9rem; text-transform: uppercase;color:#999;" class="pt-2">Expense</h4>
-                        <div style="font-weight:600; font-size:1.8rem">-{{item.Loss|number_format(2, '.', ',')}}</div>
+                    <div class="my-cards bg-c-yellow">
+                        <div class="my-card-heading">Expense</div>
+                        <div class="my-card-digit">-{{item.Loss|number_format(2, '.', ',')}}</div>
                     </div>
                 </div>
                 
@@ -83,7 +83,7 @@
     <div class="row mt-5">
         <h3>Rent Detail</h3>
         <div class="col col-12">
-            <table class="table">
+            <table class="table  data-table">
                 <thead>
                     <tr>
                       <th scope="col"  class="bg-info text-white">Rental ID</th>
@@ -99,6 +99,7 @@
                   </thead>
                   <tbody>
                     {% for item in rental_detail %}
+                    <tr>
                     <td class="align-middle">{{item.rental_id}}</td>
                     <td class="align-middle">{{item.rental_start_date}}</td>
                     <td class="align-middle">{{item.rental_end_date}}</td>
@@ -110,6 +111,7 @@
                     <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
                         <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
                         <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    </tr>
                     {% endfor %}
                   </tbody>
             </table>
@@ -123,7 +125,7 @@
         </div>
         
         <div class="col-12">
-            <table class="table">
+            <table class="table data-table">
                 <thead>
                     <tr>
                       <th scope="col"  class="bg-info text-white">Maintanace ID</th>
@@ -136,6 +138,7 @@
                   </thead>
                   <tbody>
                     {% for item in maintenance_detail %}
+                    <tr>
                     <td class="align-middle">{{item.maintenance_id}}</td>
                     <td class="align-middle">{{item.description}}</td>
                     <td class="align-middle">{{item.start_date}}</td>
@@ -144,6 +147,7 @@
                     <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
                         <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
                         <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    </tr>
                     {% endfor %}
                   </tbody>
             </table>
@@ -156,7 +160,7 @@
             <h3>Road Tax Detail </h3><a href="roadtax-create.php"><i class="bi bi-plus-square text-success" style="font-size:1.2rem"></i></a>
         </div>
         <div class="col-12">
-            <table class="table">
+            <table class="table data-table">
                 <thead>
                     <tr>
                       <th scope="col"  class="bg-info text-white">Road Tax ID</th>
@@ -167,12 +171,14 @@
                   </thead>
                   <tbody>
                     {% for item in roadtax_detail %}
+                    <tr>
                     <td class="align-middle">{{item.road_tax_id}}</td>
                     <td class="align-middle">{{item.amount|number_format(2, '.', ',')}}</td>
                     <td class="align-middle">{{item.payment_date}}</td>
                     <td class="align-middle"><a href="rental-view.php?id={{item.rental_id}}"><i class="bi bi-eye text-success me-2"></i></a>
                         <a href="rental-edit.php?id={{item.rental_id}}"><i class="bi bi-pencil-square text-warning me-2"></i></a>
                         <a href="rental-delete.php?id={{item.rental_id}}"><i class="bi bi-x-square text-danger"></i></a></td>
+                    </tr>
                     {% endfor %}
                   </tbody>
             </table>

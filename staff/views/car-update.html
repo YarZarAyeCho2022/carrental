@@ -7,15 +7,15 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="wrapper p-5 flex-fill">
+<div class="wrapper p-5 flex-fill main-wrapper">
     
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
             <h2>Update Car</h2>
         </div>
         <div>
-            <a href="car-list.php" class="py-2 px-3 btn btn-outline-info"><i class="bi bi-list-task me-2"></i>List cars</a>
-            <a href="car-view.php?id={{car_id}}" class="py-2 px-3 btn btn-info text-white"><i class="bi bi-eye me-2"></i>View</a>
+            <a href="car-list.php" class="cr-btn-primary-outline cr-btn-list">List cars</a>
+            <a href="car-view.php?id={{car_id}}" class="cr-btn-primary cr-btn-view">View</a>
         </div>
         
     </div>
@@ -92,7 +92,7 @@
         <input type="hidden" value="{{image}}" name="old-photo" />
         <input type="hidden" value="{{plate_number}}" name="old-plate-number" required>
         <input type="hidden" value="{{car_id}}" name="car-id">
-        <button type="submit" class="btn btn-info text-white" name="update-car">Update</button>
+        <button type="submit" class="cr-btn-primary cr-btn-update" name="update-car">Update</button>
     </form>
 </div>
 

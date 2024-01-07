@@ -6,40 +6,41 @@
     <title>{% block title %}{% endblock title %}</title>
     {% block head %}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.css" />
     
     {% endblock head %}
   </head>
   <body>
-    <div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-      <div class="col-md-3 mb-2 mb-md-0">
-        <a href="/" class="d-inline-flex link-body-emphasis text-decoration-none">
-          Logo
-        </a>
-      </div>
+    
 
-      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-        <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-        <li><a href="#" class="nav-link px-2">Features</a></li>
-        <li><a href="#" class="nav-link px-2">Pricing</a></li>
-        <li><a href="#" class="nav-link px-2">FAQs</a></li>
-        <li><a href="#" class="nav-link px-2">About</a></li>
-      </ul>
-
-      <div class="col-md-3 text-end">
-        {% if session.loggedin == false %}
-          <button type="button" class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#login-modal">Login</button>
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#register-modal">Sign-up</button>
+    <header class="header header-bar">
+      <nav class="px-4 py-2 shadow navbar navbar-expand-lg bg-white d-flex justify-content-between z-3">
+        <div><a href="/" class="site-logo">
+          Drive
+        </a></div>
+        <div><ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class=" px-1 mx-2">Home</a></li>
+          <li><a href="#" class=" px-1 mx-2">About</a></li>
+          <li><a href="#" class=" px-1 mx-2">Privacy Policy</a></li>
+          <li><a href="#" class=" px-1 mx-2">FAQs</a></li>
+        </ul></div>
+        <div class="d-flex gap-3 align-items-center">
+          {% if session.loggedin == false %}
+          <button type="button" class="cr-btn-primary-outline cr-btn-login" data-bs-toggle="modal" data-bs-target="#login-modal">Login</button>
+          <button type="button" class="cr-btn-primary cr-btn-add" data-bs-toggle="modal" data-bs-target="#register-modal">Sign-up</button>
         {% else %}
-          <a href="{% if session.user_type == 'staff' %}{{ 'staff/dashboard.php' }}{% else %} {{ 'user/dashboard.php'}}{% endif %}" class="btn btn-outline-primary">Dashboard</a>
-          <a href="logout.php" class="btn btn-primary">Log Out</a>
+          <a href="{% if session.user_type == 'staff' %}{{ 'staff/dashboard.php' }}{% else %} {{ 'user/dashboard.php'}}{% endif %}" class="cr-btn-primary cr-btn-dashboard">Dashboard</a>
+          <a href="logout.php" class="cr-btn-primary-outline cr-btn-exit">Log Out</a>
         {% endif %}
-      </div>
+        </div>
+      </nav>
     </header>
-  </div>
     {% block content %}    {% endblock content %}
-
     <!--Login Modal -->
     <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="login-modal" aria-hidden="true">
     <div class="modal-dialog">
@@ -66,8 +67,8 @@
                 </div>
             </div>
         <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary" name="login">Login</button>
+        <button type="button" class="cr-btn-primary-outline cr-btn-close" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="cr-btn-secondary cr-btn-login" name="login">Login</button>
         </div>
     </form>
     </div>
@@ -120,8 +121,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="submit" class="btn btn-primary" name="register">Register</button>
+                <button type="button" class="cr-btn-primary-outline cr-btn-close" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="cr-btn-secondary cr-btn-add" name="register">Register</button>
             </div>
         </form>
     </div>
@@ -129,7 +130,9 @@
     </div>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+  <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
     
     {% if (login_err is not empty or success_register is not empty) %}
     <script>
@@ -145,6 +148,7 @@
         });
     </script>
     {% endif %}
-
+    {% block script %}
+    {% endblock %}
   </body>
 </html>

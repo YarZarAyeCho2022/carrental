@@ -4,9 +4,77 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
+<section id="hero-section">
+    <div class="container-fluid hero-wrapper" >
+        <div class="d-flex mb-3">
+            <span class="slogan1">Your Journey,</span>
+            <span class="slogan2"> Our Wheels</span>
+        </div>
+            <div style="font-size: 2rem;color:#fff; text-shadow: 3px 3px 5px black;">Select the car and joy the ride.</div>
+    </div>
+</section>
+<section id="search-car" class="cr-bg-primary" style="padding:75px 0px">
+    <div class="container">
+        <form>
+            <div class="form-row">
+                <div class="row">
+                    <div class="col col-4">
+                        <div class="form-group">
+                            <label for="start-date">Start Date</label>
+                            <div class="input-group date" id="start-datepicker">
+                                <input type="text" class="form-control" id="start-date" name="start-date"/>
+                                <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col col-4">
+                        <div class="form-group">
+                            <label for="end-date">End Date</label>
+                            <div class="input-group date" id="end-datepicker">
+                                <input type="text" class="form-control" id="end-date" name="end-date"/>
+                                <span class="input-group-append"><span class="input-group-text bg-light d-block"><i class="bi bi-calendar-date"></i></span></span>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="col col-2">
+                        <div class="form-group">
+                            <label for="capacity">Capacity</label>
+                            <select class="form-select" required name="capacity">
+                                <option>Select seaters</option>
+                                <option value="1">1</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="8">8</option>
+                                <option value="12">12</option>
+                                <option value="16">16</option>
+                            </select>
+                          </div>          
+                    </div>
+                    <div class="col col-2 d-flex align-items-end">
+                        <button type="submit" class="cr-btn-secondary cr-btn-search" name="search-car">Search</button>
+                    </div>
+                    
+                </div>
+            </div>  
+        </form>
+    </div>
+</section>
 
-
-{{message}}
 
 
 {% endblock %}
+
+{% block script %}
+<script>
+    $(document).ready(function(){
+        
+        $('#start-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#end-datepicker').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+
+    });
+</script>
+  {% endblock %}

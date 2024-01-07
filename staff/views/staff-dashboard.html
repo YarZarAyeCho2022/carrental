@@ -7,12 +7,82 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="container">
+<div class="wrapper p-5 flex-fill main-wrapper">
+    <h2>Numbers</h2>
     <div class="row">
-        <div class="col col-10" style="height:500px"></div>
-        <div class="col col-2 bg-primary" style="height:500px">
-        
+        <div class="col col-3">
+            <div class="my-cards bg-c-blue">
+                <div class="my-card-heading">Total Cars</div>
+                <div class="my-card-digit">{{total_cars.0.total_cars}}</div>
+                <a href="car-list.php" class="my-card-btn">View List <i class="bi bi-chevron-right"></i></a>
+            </div>
         </div>
+        <div class="col col-3">
+            <div class="my-cards bg-c-green">
+                <div class="my-card-heading">Total Rentals</div>
+                <div class="my-card-digit">{{total_rentals.0.total_rentals}}</div>
+                <a href="rental-list.php" class="my-card-btn">View List <i class="bi bi-chevron-right"></i></a>
+            </div>
+        </div>
+        <div class="col col-3">
+            <div class="my-cards bg-c-yellow">
+                <div class="my-card-heading">Total Maintenance</div>
+                <div class="my-card-digit">{{total_maintenance.0.total_maintenance}}</div>
+                <a href="maintenance-list.php" class="my-card-btn">View List <i class="bi bi-chevron-right"></i></a>
+            </div>
+        </div>
+        <div class="col col-3">
+            <div class="my-cards bg-c-pink">
+                <div class="my-card-heading">Total Users</div>
+                <div class="my-card-digit">{{total_users.0.total_users}}</div>
+                <a href="user-list.php" class="my-card-btn">View List <i class="bi bi-chevron-right"></i></a>
+            </div>
+        </div>
+    </div><!--row-->
+    <div class="row mt-5">
+        <div class="col col-6">
+            <div class="my-cards bg-light" style="padding-left:0px; padding-right:0px">
+                <div class="my-card-heading" style="padding-left:10px; padding-right:10px; color:#888">Top Users</div>
+                {% for item in topFiveUsers %}
+                <a class="py-2 my-card-item" href="user-view.php?id={{item.user_id}}">
+                    <div class="me-2" style="width:70px; height:70px;background:url('../user/photos/{{item.photo}}'); background-size: cover; border-radius: 50%;"></div>
+                    <div class="flex-grow-1">
+                        <div style="color:#888; font-weight: 600;">ID:{{item.user_id}} {{item.name}} - {{item.email}}</div>
+                        <div style="color:#888; font-size:0.8rem">Total expense: {{item.totalAmount}}$</div>
+                        <div class="progress" style="height:5px">
+                            <div class="progress-bar bg-c-green" role="progressbar" style="width: {{item.percentage}}%" aria-valuenow="{{item.percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col col-6">
+            <div class="my-cards bg-light" style="padding-left:0px; padding-right:0px">
+                <div class="my-card-heading" style="padding-left:10px; padding-right:10px; color:#888">Top Cars</div>
+                {% for item in topFiveCars %}
+                <a class="py-2 my-card-item" href="car-view.php?id={{item.car_id}}">
+                    <div class="me-2" style="width:100px; height:70px;background:url('cars-photo/{{item.image}}'); background-size: cover; border-radius: 5px;"></div>
+                    <div class="flex-grow-1">
+                        <div style="color:#888; font-weight: 600;">{{item.plate_number}} - {{item.brand}} {{item.model}}</div>
+                        <div style="color:#888; font-size:0.8rem">Total Sales: {{item.totalAmount}}$</div>
+                        <div class="progress" style="height:5px">
+                            <div class="progress-bar bg-c-green" role="progressbar" style="width: {{item.percentage}}%" aria-valuenow="{{item.percentage}}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+        
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+    data = $("#data").html();
+    $('#myTable').DataTable( {
+    } );
+</script>
 {% endblock %}

@@ -7,7 +7,7 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="wrapper p-5 flex-fill">
+<div class="wrapper p-5 flex-fill main-wrapper">
     <h2>Create Car</h2>
     {% if success_register is not empty %}
     <div class="bg-success text-white rounded-1 my-2 p-1">{{success_register}}</div>
@@ -74,7 +74,7 @@
             <span class="small text-warning">{{photo_err}}</span>
             {% endif %}
           </div>
-        <button type="submit" class="btn btn-info text-white" name="create-car">Create</button>
+        <button type="submit" class="cr-btn-primary cr-btn-create" name="create-car">Create</button>
     </form>
 </div>
 

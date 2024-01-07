@@ -7,15 +7,15 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="wrapper p-5 flex-fill">
+<div class="wrapper p-5 flex-fill main-wrapper">
     {% for item in rental_detail %}
     <div class="d-flex align-items-center justify-content-between">
         <div class="d-flex align-items-center">
             <h2>Rental Detail</h2>
         </div>
         <div>
-            <a href="rental-list.php" class="py-2 px-3 btn btn-outline-info"><i class="bi bi-arrow-90deg-left me-2"></i>Go back</a>
-            <a href="rental-update.php?id={{item.car_id}}" class="py-2 px-3 btn btn-info text-white"><i class="bi bi-pencil-square me-2"></i>Edit</a>
+            <a href="rental-list.php" class="cr-btn-primary-outline cr-btn-list">Go back</a>
+            <a href="rental-update.php?id={{item.car_id}}" class="cr-btn-primary cr-btn-edit">Edit</a>
         </div>
     </div>
     

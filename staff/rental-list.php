@@ -32,7 +32,8 @@ CASE
 END AS rental_status
 FROM 
 rental LEFT JOIN user ON rental.user_id = user.user_id
-LEFT JOIN car on rental.car_id = car.car_id';
+LEFT JOIN car on rental.car_id = car.car_id
+ORDER BY rental.rental_end_date DESC';
 $query = $link->query($sql);
 
 while ($row = mysqli_fetch_assoc($query)) {

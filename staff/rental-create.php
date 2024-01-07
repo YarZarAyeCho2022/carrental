@@ -63,7 +63,6 @@ if (isset($_POST['create-rental'])){
             ."'".date('Y-m-d H:i:s')."'"
             .")";
 
-        echo $sql;
         $results = $link->query($sql);
         $link->close();
         

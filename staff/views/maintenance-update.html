@@ -5,7 +5,7 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="wrapper p-5 flex-fill">
+<div class="wrapper p-5 flex-fill main-wrapper">
     <h2>Update Maintenance Record</h2>
     {% if success_message is not empty %}
     <div class="bg-success text-white rounded-1 my-2 p-1">{{success_message}}</div>
@@ -52,7 +52,7 @@
             <input type="number" min="0" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"  class="form-control" id="cost" name="cost" value="{{cost}}" required>
         </div>
 
-        <button type="submit" class="btn btn-primary" name="update-maintenance">Create</button>
+        <button type="submit" class="cr-btn-primary cr-btn-update" name="update-maintenance">Update</button>
     </form>
 </div>
 

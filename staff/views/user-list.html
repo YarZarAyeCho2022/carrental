@@ -7,15 +7,15 @@
     {{parent()}}
 {% endblock %}    
 {% block content %}
-<div class="wrapper p-5 flex-fill">
+<div class="wrapper p-5 flex-fill main-wrapper">
     <div class="d-flex justify-content-between align-items-center">
     <h2>User List</h2>
-    <a class="btn btn-info text-white" href="user-create.php"><i class="bi bi-plus-square me-2"></i>Add new</a>
+    <a class="cr-btn-primary cr-btn-add" href="user-create.php">Add new</a>
     </div>
     {% if action_message is not empty %}
     <div class="bg-success text-white rounded-1 my-2 p-1">{{action_message}}</div>
     {% endif %}
-    <table class="table table-striped">
+    <table class="table table-striped data-table" id="user-list">
         <thead>
           <tr>
             <th scope="col"  class="bg-info text-white">User ID</th>
@@ -108,6 +108,9 @@
               console.log($(this).data("id"));
           })
       });
+
+      $('#user-list').DataTable( {
+      } );
   });
 </script>
 {% endblock %}
