@@ -14,7 +14,12 @@
     </div>
 </section>
 <section id="search-car" class="cr-bg-primary" style="padding:75px 0px">
+    
     <div class="container">
+        <div class="text-center text-uppercase mb-3">
+            <h2 class="mx-auto" style="font-weight: 600;">Rent a car now!</h2>
+        </div>
+        
         <form>
             <div class="form-row">
                 <div class="row">
@@ -58,6 +63,37 @@
             </div>  
         </form>
     </div>
+</section>
+<section id="car-cards" style="padding-top:75px; padding-bottom:75px">
+<div class="container">
+    <div class="text-center text-uppercase mb-3">
+        <h2 class="mx-auto" style="font-weight: 600;">Choose your flavour!</h2>
+    </div>
+    <div class="row">
+        {% for item in car_list %}
+        <div class="col col-4">
+            <div class="car-wrapper">
+                <div class="car-image-frame" style="background-image: url('staff/cars-photo/{{item.image}}');"></div>
+                <div class="car-title">{{item.brand}} - {{item.model}}</div>
+                <div>Capicity: {{item.capacity}}</div>
+                <div>Starts from: <strong>${{item.rental_price|number_format(2, '.', ',') }}</strong></div>
+                <div class="d-flex justify-content-end"><a class="cr-btn-secondary cr-btn-rent" href="rent-car.php?id={{item.car_id}}" name="rent-car">Rent</a></div>
+            </div>
+        </div>
+        {% endfor %}
+    </div><!--row-->
+</div><!--container-->
+</section>
+<section id="call-out" style="height: 70vh; background-image: url('assets/images/background.jpg');  background-attachment: fixed; display:flex; align-items:center">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col col-4 ms-auto d-flex align-items-center">
+            <div style="width:100%; padding:10px 50px; background-color: rgba(255,204,0,0.7);">
+                <div class="slogan-text" >Drive. Explore. Repeat.</div>
+            </div>
+        </div>
+    </div>
+</div>
 </section>
 
 

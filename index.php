@@ -8,12 +8,32 @@ $loader = new \Twig\Loader\FilesystemLoader('views');
 $twig = new \Twig\Environment($loader);
 $twig->addGlobal('session', $_SESSION);
 
-
-
-
 $success_register ='';
 $login_err= $register_err= '';
 $r_email_err = $r_password1_err = $r_password2_err = '';
+
+
+$sql ='SELECT
+        car.car_id,
+        car.image,
+        car.plate_number,
+        car.model,
+        car.capacity,
+        car.brand,
+        car.color,
+        car.rental_price
+    FROM 
+        car
+    ORDER BY purchase_date DESC
+        LIMIT 6';
+        $query = $link->query($sql);
+
+while ($row = mysqli_fetch_assoc($query)) {
+    $car_list[] = $row;
+}
+
+
+
 if (isset(($_POST['login']))){
     $email = $_POST['email'];
     $password = $_POST['password'];
@@ -45,8 +65,6 @@ if (isset(($_POST['login']))){
             exit;
         }
     }
-
-
 }
 
 if (isset($_POST['register'])){
@@ -88,6 +106,9 @@ if (isset($_POST['register'])){
         $success_register = 'Registration success. Login now?';
     }
 }
+
+
+
 echo $twig->render('index.html',array(
     'name' => 'Yar Zar',
     'login_err'=> $login_err,
@@ -96,7 +117,7 @@ echo $twig->render('index.html',array(
     'r_password1_err'=> $r_password1_err,
     'r_password2_err'=> $r_password2_err,
     'success_register' => $success_register,
-
+    'car_list' => $car_list,
 
 ))
 ?>

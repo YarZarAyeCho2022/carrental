@@ -423,6 +423,23 @@ nav .site-logo {
     right: 5px;
 }
 
+.cr-btn-rent {
+    position: relative;
+}
+
+.cr-btn-rent::after {
+    content: "\F1F8";
+    font-family: bootstrap-icons !important;
+    right: 10px;
+    display: inline-block;
+    position: absolute;
+    transition: 0.3s;
+}
+
+.cr-btn-rent:hover::after {
+    right: 5px;
+}
+
 /*Hero Section*/
 .hero-wrapper {
     height: 70vh;
@@ -455,4 +472,39 @@ nav .site-logo {
     padding: 0.1rem 2rem;
     transform: skew(-15deg);
 
+}
+
+.car-wrapper {
+    padding: 15px;
+    margin: 15px 0px;
+    border: 1px solid #eee;
+    background-color: #eee;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.car-wrapper:hover {
+    border: 1px solid #fc0;
+    box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.3);
+}
+
+.car-wrapper .car-image-frame {
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+}
+
+.car-wrapper .car-title {
+    margin-top: 10px;
+    font-size: 1.2erm;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
+#call-out .slogan-text {
+    text-align: right;
+    font-family: 'Poppins', sans-serif;
+    font-size: 4rem;
+    font-style: italic;
 }
